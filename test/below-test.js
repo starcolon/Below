@@ -47,9 +47,15 @@ describe('@below test kit',function(){
 				expect(grid[0][j]).to.have.property('items');
 			}
 
+
+			// Positive test
 			settings.entrances.forEach(function (en){
 				expect(Grid.cell(en.i,en.j).of(grid)['isEntrance']).to.be.true;
 			});
+			// Negative test
+			expect(Grid.cell(2,23).of(grid)['isEntrance']).to.be.false;			
+			expect(Grid.cell(2,37).of(grid)['isEntrance']).to.be.false;			
+
 
 			settings.exits.forEach(function (ex){
 				expect(Grid.cell(ex.i,ex.j).of(grid)['isExit']).to.be.true;

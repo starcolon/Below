@@ -77,6 +77,30 @@ below.generate = function(settings){
 	return grid;
 }
 
+/**
+ * 2D array utility functions
+ */
+below.array2d = {
+
+	/**
+	 * below.array2d.map(grid,mapper)
+	 * Map a grid to another grid using mapper function
+	 * @param {Grid}
+	 * @param {Function} F - mapper function which takes a value of a cell and returns the output value
+	 * @returns {Grid} mapped grid
+	 */
+	map: function(grid,F){
+		var output = [];
+		for (var i in grid){
+			if (!output.hasOwnProperty(i)) output[i] = [];
+			for (var j in grid[i]){
+				output[i][j] = F(grid[i][j]);
+			}
+		}
+		return output;
+	}
+}
+
 
 if (typeof(module)!='undefined'){
 	module.exports = below;
