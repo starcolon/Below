@@ -68,12 +68,12 @@ describe('@below test kit',function(){
 
 			// {ITEMS} Positive test
 			settings.items.forEach(function (it){
-				expect(Grid.cell(it.i,it.j).of(grid)['items']).to.deep.equal([it.item]);
+				expect(Grid.cell(it.i,it.j).of(grid)['items']).to.contain.an.item.equal(it.item);
 			})
 
 			// {OBSTACLES} Positve test
 			settings.obstacles.forEach(function(ob){
-				expect(Grid.cell(ob.i,ob.j).of(grid)['obstacles']).to.deep.equal([ob.obstacle]);
+				expect(Grid.cell(ob.i,ob.j).of(grid)['obstacles']).to.contain.an.item.equal(ob.obstacle);
 			})
 
 			// {WALLS} Positive test
