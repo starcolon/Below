@@ -55,16 +55,27 @@ below.generate = function(settings){
 	});
 
 	// Apply entrances
-	settings.entrances.forEach(function mapEntrance(entrance){});
+	settings.entrances.forEach(function mapEntrance(entrance){
+		Grid.cell(entrance.i, entrance.j)['isEntrace'] = true;
+	});
 	// Apply exits
-	settings.exits.forEach(function mapExit(exit){});
+	settings.exits.forEach(function mapExit(exit){
+		Grid.cell(exit.i, exit.j)['isExit'] = true;
+	});
 	// Apply items
-	settings.items.forEach(function mapItem(item){});
+	settings.items.forEach(function mapItem(item){
+		function pushMe(i){ return i.push(item['item'])};
+		Grid.cell(item.i, item.j).applyProperty(grid)('items',pushMe);
+	});
 	// Apply obstacles
-	settings.obstacles.forEach(function mapOb(ob){});
+	settings.obstacles.forEach(function mapOb(ob){
+		function pushMe(o){ return o.push(ob['obstacle']) };
+		Grid.cell(ob.i,ob.j).applyProperty(grid)('obstacles',pushMe);
+	});
 	// Apply walls
 	settings.walls.forEach(function mapWall(wall){
-		Grid.cell(wall.i, wall.j).setTo(grid)()
+		function pushMe(w){ return w.push(wall) };
+		Grid.cell(wall.i, wall.j).applyProperty(grid)('walls',pushMe);
 	});
 
 	return grid;
