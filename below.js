@@ -46,7 +46,7 @@ below.generate = function(settings){
 		throw 'The size must be properly defined';
 
 	// Create an empty grid, fill each cell with default structure 
-	var grid = Grid.create(settings.size.width, settings.size.height, {
+	let grid = Grid.create(settings.size.width, settings.size.height, {
 		isDug: false,
 		cost: 0,
 		items: []
