@@ -62,21 +62,35 @@ below.generate = function(settings){
 	settings.exits.forEach(function mapExit(exit){
 		Grid.cell(exit.i, exit.j)['isExit'] = true;
 	});
+
+	function applyListToCell(grid,prop){
+		return function doEach(elem){
+			function pushMe(prev){ prev = prev || []; prev.push(elem[prop]); return prev; };
+			Grid.cell(elem.i, elem.j).applyProperty(grid)(prop,pushMe);	
+		}
+	}
+
+	settings.items.forEach(applyListToCell(grid,'item'));
+	settings.obstacles.forEach(applyListToCell(grid,'obstacles'));
+	settings.walls.forEach(applyListToCell(grid,'walls'));
+
+	/*
 	// Apply items
 	settings.items.forEach(function mapItem(item){
-		function pushMe(i){ return i.push(item['item'])};
+		function pushMe(prev){ prev = prev || []; prev.push(item['item']); return prev; };
 		Grid.cell(item.i, item.j).applyProperty(grid)('items',pushMe);
 	});
 	// Apply obstacles
 	settings.obstacles.forEach(function mapOb(ob){
-		function pushMe(o){ return o.push(ob['obstacle']) };
+		function pushMe(prev){ prev = prev || []; prev.push(ob['obstacle']); return prev; };
 		Grid.cell(ob.i,ob.j).applyProperty(grid)('obstacles',pushMe);
 	});
 	// Apply walls
 	settings.walls.forEach(function mapWall(wall){
-		function pushMe(w){ return w.push(wall) };
+		function pushMe(prev){ prev = prev || []; prev.push(wall); return prev; };
 		Grid.cell(wall.i, wall.j).applyProperty(grid)('walls',pushMe);
 	});
+	*/
 
 	return grid;
 }
