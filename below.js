@@ -91,12 +91,12 @@ below.array2d = {
 	 * @returns {Grid} mapped grid
 	 */
 	map: function(grid,F){
-		var output = [];
+		var output = grid.slice();
 		for (var i in grid){
-			if (!output.hasOwnProperty(i)) output[i] = [];
-			for (var j in grid[i]){
-				output[i][j] = F(grid[i][j]);
-			}
+			output[i] = grid[i].slice();
+			output[i] = output[i].map(function(cell){
+				return F(cell)
+			});
 		}
 		return output;
 	}

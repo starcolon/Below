@@ -13,7 +13,7 @@ var Grid = require('../modules/grid.js').Grid;
 
 describe('@below test kit',function(){
 
-	describe('Fundamental tests', function(){
+	describe('Creation tests', function(){
 
 		it('should create a settings object', function(){
 			var settings = below.settings.create();
@@ -82,6 +82,45 @@ describe('@below test kit',function(){
 			})
 
 		})
+	})
 
+	describe('Array 2d utility tests', function(){
+
+		var grid = [];
+
+		before(function(done){
+			var settings = below.settings.create();
+			settings.size = {width: 12, height: 12};
+			settings.entrances = [{i:5,j:0},{i:3,j:0}];
+			settings.exits = [];
+			settings.items = [{i:3,j:3,item:'apple'},{i:3,j:3,item:'mango'},{i:5,j:4,item:'pencil'}];
+			settings.obstacles = [];
+			settings.walls = [{i:6,j:5},{i:7,j:5},{i:8,j:5}];
+
+			grid = below.generate(settings);
+			done();
+		})
+
+		it('should map 2d cost matrix', function(){
+			var cost = below.array2d.map(grid,function(cell){ return cell['cost'] });
+			console.log(cost);
+
+			cost.should.have.length(12);
+			cost[0].should.have.length(12);
+			expect(cost[6][5]).to.equal(0xFFFF);
+			expect(cost[2][2]).to.equal(0);
+		})
+
+		it('should map 2d item matrix', function(){
+			var item = below.array2d.map(grid,function(cell){ return cell['items'].join(',')});
+			console.log(item);
+
+			item.should.have.length(12);
+			item[0].should.have.length(12);
+			expect(item[3][3]).to.equal('apple,mango');
+			expect(item[5][4]).to.equal('pencil');
+			expect(item[0][0]).to.equal('');
+
+		})
 	})
 })
