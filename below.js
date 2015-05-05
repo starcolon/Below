@@ -26,70 +26,23 @@ below.settings = {
 	 */
 	create: function(){
 		return {
-			size: {width:0, height:0},
-			entrances: [],
-			exits: [],
-			items: [],
-			obstacles: [],
-			walls: []
+			size: {width:0, height:0}, // Positive integers
+			entrances: [], // Array of coordinates {i,j}
+			exits: [], // Array of coordinates {i,j}
+			items: [], // Array of coordinates {i,j,item}
+			obstacles: [], // Array of coordinates {i,j,obstacle}
+			walls: [] // Array of coordinates {i,j}
 		}
-	},
-
-	/**
-	 * below.settings.size
-	 * Getter/Setter of size
-	 */
-	size: {
-		get: function(s){ return s.size.width },
-		set: function(s){ return function(w,h){ s.size.width = w; s.size.height = h; return s }}
-	},
-
-	/**
-	 * below.settings.entraces
-	 * Getter/Setter of entrances
-	 */
-	entrances: {
-
-	},
-
-	/**
-	 * below.settings.exits
-	 * Getter/Setter of exits
-	 */
-	exits: {
-
- 	},
-
- 	/**
- 	 * below.settings.items
- 	 * Getter/Setter of items
- 	 */
- 	items: {},
-
- 	/**
- 	 * below.settings.obstacles
- 	 * Getter/Setter of obstacles
- 	 */
- 	obstacles: {},
-
- 	/**
- 	 * below.settings.walls
- 	 * Getter/Setter of walls
- 	 */
- 	walls: {}
-
-
+	}
 }
 
 /**
  * Generates a new grid given the configurations
- * @param {Integer} column - Size of the columns
- * @param {Integer} depth - Size of the rows
  * @param {below.settings} settings 
  * @returns {Grid} output grid generated with the given configurations
  */
-below.generate = function(column,depth,settings){
-	if (column*depth<=0)
+below.generate = function(settings){
+	if (settings.width*settings.height<=0)
 		throw 'The size must be properly defined';
 
 	throw 'NOT IMPLEMENTED';
