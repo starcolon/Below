@@ -1,0 +1,25 @@
+{
+  "name": "Below",
+  "description": "Library for spatial simulation app",
+  "author": "StarColon Projects",
+  "email": "tao@starcolon.com",
+  "url": "http://starcolon.com/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/starcolon/Below.git"
+  },
+  "version": "0.0.0",
+  "private": false,
+  "scripts": {
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "body-parser": ">= 1.10.0",
+    "colors": "*",
+    "express": "*",
+    "mocha": "*",
+    "mongodb": "1.4.28",
+    "mongoskin": "^1.4.13",
+    "underscore": "*"
+  }
+}
