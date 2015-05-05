@@ -53,8 +53,8 @@ describe('@below test kit',function(){
 				expect(Grid.cell(en.i,en.j).of(grid)['isEntrance']).to.be.true;
 			});
 			// {ENTRANCE} Negative test
-			expect(Grid.cell(2,23).of(grid)['isEntrance']).to.be.false;			
-			expect(Grid.cell(2,37).of(grid)['isEntrance']).to.be.false;			
+			expect(Grid.cell(2,23).of(grid)['isEntrance']).not.to.be.true;			
+			expect(Grid.cell(2,37).of(grid)['isEntrance']).not.to.be.true;			
 
 			// {EXIT} Positive test
 			settings.exits.forEach(function (ex){
@@ -62,13 +62,13 @@ describe('@below test kit',function(){
 			})
 
 			// {EXIT} Negative test 
-			expect(Grid.cell(35,15).of(grid)['isExit']).to.be.false;
-			expect(Grid.cell(75,0).of(grid)['isExit']).to.be.false;
-			expect(Grid.cell(45,25).of(grid)['isExit']).to.be.false;
+			expect(Grid.cell(35,15).of(grid)['isExit']).not.to.be.true;
+			expect(Grid.cell(75,0).of(grid)['isExit']).not.to.be.true;
+			expect(Grid.cell(45,25).of(grid)['isExit']).not.to.be.true;
 
 			// {ITEMS} Positive test
 			settings.items.forEach(function (it){
-				expect(Grid.cell(it.i,it.j).of(grid)['items']).to.equal(it.item);
+				expect(Grid.cell(it.i,it.j).of(grid)['items']).to.deep.equal([it.item]);
 			})
 
 			// {ITEMS} Negative test

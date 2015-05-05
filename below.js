@@ -48,25 +48,24 @@ below.generate = function(settings){
 		throw 'The size must be properly defined';
 
 	// Create an empty grid, fill each cell with default structure 
-	let grid = Grid.create(settings.size.width, settings.size.height, {
-		isDug: false,
-		cost: 0,
-		items: []
-	});
+	let grid = Grid.create(settings.size.width, settings.size.height, {});
+	Grid.eachOf(grid).applyProperty('isDug',function(){return false});
+	Grid.eachOf(grid).applyProperty('cost',function(){return 0});
+	Grid.eachOf(grid).applyProperty('items',function(){return []});
 
 	// Apply entrances
 	settings.entrances.forEach(function mapEntrance(entrance){
-		Grid.cell(entrance.i, entrance.j).applyProperty(grid,'isEntrance',function(){return true});
+		Grid.cell(entrance.i, entrance.j).applyProperty(grid)('isEntrance',function(){return true});
 	});
 	// Apply exits
 	settings.exits.forEach(function mapExit(exit){
-		Grid.cell(exit.i, exit.j).applyProperty(grid,'isExit',function(){return true});
+		Grid.cell(exit.i, exit.j).applyProperty(grid)('isExit',function(){return true});
 	});
 
 	function applyListToCell(prop){
 		return function doEach(elem){
 			function pushMe(prev){ prev = prev || []; prev.push(elem[prop]); return prev; };
-			Grid.cell(elem.i, elem.j).applyProperty(grid,prop+'s',pushMe);	
+			Grid.cell(elem.i, elem.j).applyProperty(grid)(prop+'s',pushMe);	
 		}
 	}
 
