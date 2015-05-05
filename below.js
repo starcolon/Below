@@ -42,10 +42,30 @@ below.settings = {
  * @returns {Grid} output grid generated with the given configurations
  */
 below.generate = function(settings){
-	if (settings.width*settings.height<=0)
+	if (settings.size.width*settings.size.height<=0)
 		throw 'The size must be properly defined';
 
-	throw 'NOT IMPLEMENTED';
+	// Create an empty grid, fill each cell with default structure 
+	var grid = Grid.create(settings.size.width, settings.size.height, {
+		isDug: false,
+		cost: 0,
+		items: []
+	});
+
+	// Apply entrances
+	settings.entrances.forEach(function mapEntrance(entrance){});
+	// Apply exits
+	settings.exits.forEach(function mapExit(exit){});
+	// Apply items
+	settings.items.forEach(function mapItem(item){});
+	// Apply obstacles
+	settings.obstacles.forEach(function mapOb(ob){});
+	// Apply walls
+	settings.walls.forEach(function mapWall(wall){
+		Grid.cell(wall.i, wall.j).setTo(grid)()
+	});
+
+	return grid;
 }
 
 
