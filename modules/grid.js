@@ -33,6 +33,8 @@
   * @author Tao PR
   */
 
+"use strict";
+
 var _ = require('underscore');
 
 /**
@@ -52,10 +54,10 @@ Grid.create = function(numRow,numCol,defaultValue){
 		throw "Number of columns and rows must be positive integer." 
 
 	defaultValue = defaultValue || 0;
-	var grid = [];
+	let grid = [];
 
 	_(numCol).times(function populateRow(){
-		var row = [];
+		let row = [];
 		_(numRow).times(function(){row.push(defaultValue)});
 		grid.push(row);	
 	});
@@ -69,7 +71,7 @@ Grid.create = function(numRow,numCol,defaultValue){
  * @returns {grid}
  */
 Grid.duplicate = function(grid){
-	var g = [];
+	let g = [];
 	Grid.eachCellOf(grid).do(function (value, coord){
 		if (!(coord.i in g))
 			g[coord.i] = [];
@@ -636,7 +638,7 @@ Grid.traverse = function(grid){
 		 */
 		this.go = function(directions){
 			var pos = {i: i, j: j};
-			route = [{i: i, i: j}];
+			route = [{i: i, j: j}];
 			while (directions.length>0){
 				var next = directions.splice(0,1);
 				pos = move(pos, next);

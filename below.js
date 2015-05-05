@@ -6,6 +6,8 @@
  * 2015
  */
 
+"use strict";
+
 // Dependencies
 var _ = require('underscore');
 var Grid = require('./modules/grid.js').Grid;
