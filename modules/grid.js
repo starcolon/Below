@@ -880,7 +880,7 @@ Grid.eachCellOf = Grid.eachOf = function(grid){
 	 * @param {Function} F - Mapper function which takes the old property value
 	 *                       and returns the new value
 	 * @returns {Integer} Number of the affected cells 
-	 */ // TAOTODO: Test me
+	 */
 	this.applyProperty = function(prop,F){
 		var count=0;
 		for (var i in grid)
