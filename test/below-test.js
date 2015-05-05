@@ -71,11 +71,16 @@ describe('@below test kit',function(){
 				expect(Grid.cell(it.i,it.j).of(grid)['items']).to.deep.equal([it.item]);
 			})
 
-			// {ITEMS} Negative test
-			// TAOTODO:
+			// {OBSTACLES} Positve test
+			settings.obstacles.forEach(function(ob){
+				expect(Grid.cell(ob.i,ob.j).of(grid)['obstacles']).to.deep.equal([ob.obstacle]);
+			})
 
+			// {WALLS} Positive test
+			settings.walls.forEach(function (wall){
+				expect(Grid.cell(wall.i,wall.j).of(grid)['cost']).to.equal(0xFFFF);
+			})
 
-			// TAOTODO: Write others property tests
 		})
 
 	})
