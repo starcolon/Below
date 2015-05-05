@@ -56,41 +56,23 @@ below.generate = function(settings){
 
 	// Apply entrances
 	settings.entrances.forEach(function mapEntrance(entrance){
-		Grid.cell(entrance.i, entrance.j)['isEntrace'] = true;
+		Grid.cell(entrance.i, entrance.j).applyProperty(grid)('isEntrance',function(){return true});
 	});
 	// Apply exits
 	settings.exits.forEach(function mapExit(exit){
-		Grid.cell(exit.i, exit.j)['isExit'] = true;
+		Grid.cell(exit.i, exit.j).applyProperty(grid)('isExit',function(){return true});
 	});
 
-	function applyListToCell(grid,prop){
+	function applyListToCell(prop){
 		return function doEach(elem){
 			function pushMe(prev){ prev = prev || []; prev.push(elem[prop]); return prev; };
-			Grid.cell(elem.i, elem.j).applyProperty(grid)(prop,pushMe);	
+			Grid.cell(elem.i, elem.j).applyProperty(grid)(prop+'s',pushMe);	
 		}
 	}
 
-	settings.items.forEach(applyListToCell(grid,'item'));
-	settings.obstacles.forEach(applyListToCell(grid,'obstacles'));
-	settings.walls.forEach(applyListToCell(grid,'walls'));
-
-	/*
-	// Apply items
-	settings.items.forEach(function mapItem(item){
-		function pushMe(prev){ prev = prev || []; prev.push(item['item']); return prev; };
-		Grid.cell(item.i, item.j).applyProperty(grid)('items',pushMe);
-	});
-	// Apply obstacles
-	settings.obstacles.forEach(function mapOb(ob){
-		function pushMe(prev){ prev = prev || []; prev.push(ob['obstacle']); return prev; };
-		Grid.cell(ob.i,ob.j).applyProperty(grid)('obstacles',pushMe);
-	});
-	// Apply walls
-	settings.walls.forEach(function mapWall(wall){
-		function pushMe(prev){ prev = prev || []; prev.push(wall); return prev; };
-		Grid.cell(wall.i, wall.j).applyProperty(grid)('walls',pushMe);
-	});
-	*/
+	settings.items.forEach(applyListToCell('item'));
+	settings.obstacles.forEach(applyListToCell('obstacle'));
+	settings.walls.forEach(applyListToCell('wall'));
 
 	return grid;
 }

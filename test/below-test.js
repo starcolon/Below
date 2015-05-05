@@ -37,7 +37,6 @@ describe('@below test kit',function(){
 
 			var grid = below.generate(settings);
 
-			// TAOTODO: Gently compose the test
 			expect(Grid.has(grid,0,0)).to.be.true;
 			expect(Grid.has(grid,79,79)).to.be.true;
 			expect(Grid.has(grid,80,80)).to.be.false;
@@ -47,6 +46,18 @@ describe('@below test kit',function(){
 				expect(grid[0][j]).to.have.property('cost');
 				expect(grid[0][j]).to.have.property('items');
 			}
+
+			settings.entrances.forEach(function (en){
+				expect(Grid.cell(en.i,en.j).of(grid)['isEntrance']).to.be.true;
+			});
+
+			settings.exits.forEach(function (ex){
+				expect(Grid.cell(ex.i,ex.j).of(grid)['isExit']).to.be.true;
+			})
+
+			settings.items.forEach(function (it){
+				expect(Grid.cell(it.i,it.j).of(grid)['items']).to.equal(it.item);
+			})
 		})
 
 	})
