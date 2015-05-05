@@ -48,22 +48,34 @@ describe('@below test kit',function(){
 			}
 
 
-			// Positive test
+			//  {ENTRANCE} Positive test
 			settings.entrances.forEach(function (en){
 				expect(Grid.cell(en.i,en.j).of(grid)['isEntrance']).to.be.true;
 			});
-			// Negative test
+			// {ENTRANCE} Negative test
 			expect(Grid.cell(2,23).of(grid)['isEntrance']).to.be.false;			
 			expect(Grid.cell(2,37).of(grid)['isEntrance']).to.be.false;			
 
-
+			// {EXIT} Positive test
 			settings.exits.forEach(function (ex){
 				expect(Grid.cell(ex.i,ex.j).of(grid)['isExit']).to.be.true;
 			})
 
+			// {EXIT} Negative test 
+			expect(Grid.cell(35,15).of(grid)['isExit']).to.be.false;
+			expect(Grid.cell(75,0).of(grid)['isExit']).to.be.false;
+			expect(Grid.cell(45,25).of(grid)['isExit']).to.be.false;
+
+			// {ITEMS} Positive test
 			settings.items.forEach(function (it){
 				expect(Grid.cell(it.i,it.j).of(grid)['items']).to.equal(it.item);
 			})
+
+			// {ITEMS} Negative test
+			// TAOTODO:
+
+
+			// TAOTODO: Write others property tests
 		})
 
 	})

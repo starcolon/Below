@@ -56,17 +56,17 @@ below.generate = function(settings){
 
 	// Apply entrances
 	settings.entrances.forEach(function mapEntrance(entrance){
-		Grid.cell(entrance.i, entrance.j).applyProperty(grid)('isEntrance',function(){return true});
+		Grid.cell(entrance.i, entrance.j).applyProperty(grid,'isEntrance',function(){return true});
 	});
 	// Apply exits
 	settings.exits.forEach(function mapExit(exit){
-		Grid.cell(exit.i, exit.j).applyProperty(grid)('isExit',function(){return true});
+		Grid.cell(exit.i, exit.j).applyProperty(grid,'isExit',function(){return true});
 	});
 
 	function applyListToCell(prop){
 		return function doEach(elem){
 			function pushMe(prev){ prev = prev || []; prev.push(elem[prop]); return prev; };
-			Grid.cell(elem.i, elem.j).applyProperty(grid)(prop+'s',pushMe);	
+			Grid.cell(elem.i, elem.j).applyProperty(grid,prop+'s',pushMe);	
 		}
 	}
 
