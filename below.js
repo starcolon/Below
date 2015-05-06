@@ -99,6 +99,20 @@ below.array2d = {
 			});
 		}
 		return output;
+	},
+
+	/**
+	 * below.array2d.pluck(grid,'cost')
+	 * Works similarly to underscor's pluck function on each cell
+	 * @param {Grid}
+	 * @param {String} prop - The property to pluck
+	 * @returns {Grid} which contains the plucked value
+	 */
+	pluck: function(grid,prop){
+		var output = grid.slice();
+		for (var i in grid)
+			output[i] = _.pluck(grid[i],prop);
+		return output;
 	}
 }
 

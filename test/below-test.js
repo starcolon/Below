@@ -122,5 +122,14 @@ describe('@below test kit',function(){
 			expect(item[0][0]).to.equal('');
 
 		})
+
+		it('should pluck 2d matrix', function(){
+			var costFromMap = below.array2d.map(grid,function(cell){ return cell['cost'] });
+			var costFromPluck = below.array2d.pluck(grid,'cost');
+
+			for (var i in costFromMap){
+				costFromMap[i].should.deep.equal(costFromPluck[i]);
+			}
+		})
 	})
 })
