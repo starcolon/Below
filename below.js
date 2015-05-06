@@ -33,7 +33,8 @@ below.settings = {
 			exits: [], // Array of coordinates {i,j}
 			items: [], // Array of coordinates {i,j,item}
 			obstacles: [], // Array of coordinates {i,j,obstacle}
-			walls: [] // Array of coordinates {i,j}
+			walls: [], // Array of coordinates {i,j}
+			costFunction: function(value,coord){return value} // Cost function of each cell
 		}
 	}
 }
@@ -52,6 +53,9 @@ below.generate = function(settings){
 	Grid.eachOf(grid).applyProperty('isDug',function(){return false});
 	Grid.eachOf(grid).applyProperty('cost',function(){return 0});
 	Grid.eachOf(grid).applyProperty('items',function(){return []});
+
+	// Apply cost function
+	Grid.eachOf(grid).applyProperty('cost',settings.costFunction);
 
 	// Apply entrances
 	settings.entrances.forEach(function mapEntrance(entrance){

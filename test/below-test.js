@@ -24,6 +24,7 @@ describe('@below test kit',function(){
 			expect(settings).to.have.property('items');
 			expect(settings).to.have.property('obstacles');
 			expect(settings).to.have.property('walls');
+			expect(settings).to.have.property('costFunction');
 		})
 
 		it('should create a grid which satisfies the settings', function(){
@@ -34,6 +35,7 @@ describe('@below test kit',function(){
 			settings.items = [{i:32,j:32,item:'apple'},{i:50,j:64,item:'pencil'}];
 			settings.obstacles = [{i:50,j:0,obstacle:25}];
 			settings.walls = [{i:6,j:5},{i:7,j:5},{i:8,j:5}];
+			settings.costFunction = function(value,coord){ return 1*Math.pow(2,coord.j)};
 
 			var grid = below.generate(settings);
 
@@ -81,6 +83,10 @@ describe('@below test kit',function(){
 				expect(Grid.cell(wall.i,wall.j).of(grid)['cost']).to.equal(0xFFFF);
 			})
 
+			// {COST} tests
+			expect(Grid.cell(5,5).of(grid)['cost']).to.equal(32);
+			expect(Grid.cell(0,5).of(grid)['cost']).to.equal(32);
+			expect(Grid.cell(5,10).of(grid)['cost']).to.equal(1024);
 		})
 	})
 
@@ -96,6 +102,7 @@ describe('@below test kit',function(){
 			settings.items = [{i:3,j:3,item:'apple'},{i:3,j:3,item:'mango'},{i:5,j:4,item:'pencil'}];
 			settings.obstacles = [];
 			settings.walls = [{i:6,j:5},{i:7,j:5},{i:8,j:5}];
+			settings.costFunction = function(v,coord){return parseInt(coord.i)+2*parseInt(coord.j)};
 
 			grid = below.generate(settings);
 			done();
@@ -108,7 +115,8 @@ describe('@below test kit',function(){
 			cost.should.have.length(12);
 			cost[0].should.have.length(12);
 			expect(cost[6][5]).to.equal(0xFFFF);
-			expect(cost[2][2]).to.equal(0);
+			expect(cost[0][0]).to.equal(0);
+			expect(cost[2][2]).to.equal(6);
 		})
 
 		it('should map 2d item matrix', function(){

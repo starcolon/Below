@@ -750,7 +750,7 @@ Grid.cell = function(i,j){
 	this.applyProperty = function(grid){
 		/*
 		 * @param {String} prob - property name
-		 * @param {Function} F - mapper function which takes property value as a argument and
+		 * @param {Function} F - mapper function which takes property value and coordinate as arguments and
 		 *                     returns a new value
 		 */
 		return function (prop,F){
@@ -761,7 +761,7 @@ Grid.cell = function(i,j){
 				value[prop] = null;
 			}
 			// Map F now
-			value[prop] = F(value[prop]);
+			value[prop] = F(value[prop],coord);
 			grid[coord.i][coord.j] = value;
 			return grid;
 		}
@@ -881,7 +881,7 @@ Grid.eachCellOf = Grid.eachOf = function(grid){
 	 * Apply function F on the specific property of each cells which 
 	 * satisfy the filter condition
 	 * @param {String} prop - Property name
-	 * @param {Function} F - Mapper function which takes the old property value
+	 * @param {Function} F - Mapper function which takes the old property value along with coordinate
 	 *                       and returns the new value
 	 * @returns {Integer} Number of the affected cells 
 	 */
@@ -892,7 +892,7 @@ Grid.eachCellOf = Grid.eachOf = function(grid){
 				if (self.cellFilter(grid[i][j],{i:i,j:j})){
 					if (!grid[i][j].hasOwnProperty(prop))
 						grid[i][j][prop] = null;
-					grid[i][j][prop] = F(grid[i][j][prop]);
+					grid[i][j][prop] = F(grid[i][j][prop],{i:i,j:j});
 					++count;
 				}
 		return count;
