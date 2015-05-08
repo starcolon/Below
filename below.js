@@ -83,6 +83,49 @@ below.generate = function(settings){
 }
 
 /**
+ * Query for the grid entrances
+ * @param {grid}
+ * @returns {Array} of coordinates representing the entrances
+ */
+below.entrances = function(grid){
+	var entrances = [];
+	for (var i in grid)
+		for (var j in grid[i]){
+			if (Grid.cell(i,j).of(grid)['isEntrance']===true)
+				entrances.push({i:parseInt(i),j:parseInt(j)});
+		}
+	return entrances;
+}
+
+/**
+ * Query for the grid exits
+ * @param {grid}
+ * @returns {Array} of coordinates representing the exits
+ */
+below.exits = function(grid){
+	var exits = [];
+	for (var i in grid)
+		for (var j in grid[i]){
+			if (Grid.cell(i,j).of(grid)['isExit']===true)
+				exits.push({i:parseInt(i),j:parseInt(j)});
+		}
+	return exits;
+}
+
+
+/**
+ * Given a grid with content, generate possible routes from a source cell to the destination
+ * @param {grid} 
+ * @param {coord} starting point, if omitted, the default is set to the [first entrance]
+ * @param {coord} destination point, if omitted, the default is set to the [first exit]
+ * @returns {Array} array of coordinates representing the route
+ */
+below.generateRoutes = function(grid,startCoord,endCoord){
+	startCoord = startCoord | 
+}
+
+
+/**
  * 2D array utility functions
  */
 below.array2d = {
