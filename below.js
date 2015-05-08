@@ -91,7 +91,7 @@ below.entrances = function(grid){
 	var entrances = [];
 	for (var i in grid)
 		for (var j in grid[i]){
-			if (Grid.cell(i,j).of(grid)['isEntrance']===true)
+			if (Grid.cell(parseInt(i),parseInt(j)).of(grid)['isEntrance']===true)
 				entrances.push({i:parseInt(i),j:parseInt(j)});
 		}
 	return entrances;
@@ -106,7 +106,7 @@ below.exits = function(grid){
 	var exits = [];
 	for (var i in grid)
 		for (var j in grid[i]){
-			if (Grid.cell(i,j).of(grid)['isExit']===true)
+			if (Grid.cell(parseInt(i),parseInt(j)).of(grid)['isExit']===true)
 				exits.push({i:parseInt(i),j:parseInt(j)});
 		}
 	return exits;
@@ -121,7 +121,7 @@ below.exits = function(grid){
  * @returns {Array} array of coordinates representing the route
  */
 below.generateRoutes = function(grid,startCoord,endCoord){
-	startCoord = startCoord | 
+	
 }
 
 

@@ -88,6 +88,23 @@ describe('@below test kit',function(){
 			expect(Grid.cell(0,5).of(grid)['cost']).to.equal(32);
 			expect(Grid.cell(5,10).of(grid)['cost']).to.equal(1024);
 		})
+
+		it('should query entrances / exits correctly', function(){
+			var settings = below.settings.create();
+			settings.size = {width: 80, height: 80};
+			settings.entrances = [{i:0,j:0},{i:0,j:52}];
+			settings.exits = [{i:79,j:79}];
+			settings.items = [{i:32,j:32,item:'apple'},{i:50,j:64,item:'pencil'}];
+			settings.obstacles = [{i:50,j:0,obstacle:25}];
+			settings.walls = [{i:6,j:5},{i:7,j:5},{i:8,j:5}];
+			settings.costFunction = function(value,coord){ return 1*Math.pow(2,coord.j)};
+
+			var grid = below.generate(settings);
+
+			below.entrances(grid).should.deep.equal(settings.entrances);
+			below.exits(grid).should.deep.equal(settings.exits);
+		})
+
 	})
 
 	describe('Array 2d utility tests', function(){
