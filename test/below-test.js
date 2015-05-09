@@ -157,4 +157,26 @@ describe('@below test kit',function(){
 			}
 		})
 	})
+
+	describe('routing tests', function(){
+		var grid = []
+		var settings = below.settings.create();
+		settings.size = {width: 80, height: 80};
+		settings.entrances = [{i:0,j:0}];
+		settings.exits = [{i:79,j:79}];
+		settings.obstacles = [{i:50,j:0,obstacle:25}];
+		settings.walls = [{i:6,j:5},{i:7,j:5},{i:8,j:5}];
+		settings.costFunction = function(value,coord){ return 1 };
+
+		before(function(done){
+			grid = below.generate(settings);
+			done();
+		})
+
+		it('should find a route from the entrance to the exit',function(){
+			var route = below.generateRoute(grid);
+			console.log(route);
+		})
+
+	})
 })

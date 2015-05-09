@@ -36,6 +36,7 @@
 "use strict";
 
 var _ = require('underscore');
+var colors = require('colors');
 
 /**
  * Grid namespace, not to be used as a class
@@ -462,7 +463,9 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 			 * @param {Function} cost - Cost function which takes (value, coord) and returns positive number cost value
 			 * @returns {Array} Route constructed with the algorithm
 			 **/
-			this.astar = function(cost){
+			this.astar = function(cost,verbose){
+
+				verbose = verbose || false;
 
 				// If cost function is not defined,
 				// all coordinates make no cost difference
@@ -527,6 +530,8 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 						// Multiply the aggegrated cost of it and repeat the process
 						routes[0].G *= 10;
 						routes = _.sortBy(routes, _G);
+						if (verbose==true) 
+							console.log((JSON.stringify(routes[0].G) + ' got a penalty').yellow);
 					}
 					else{
 						// Remove the first candidate (current) off the list
@@ -543,6 +548,11 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 
 						// Keep the route list sorted, the best goes first
 						routes = _.sortBy(routes, _G);
+
+						if (verbose==true){
+							console.log('Best route expanded so far:'.cyan);
+							console.log(_.first(routes));
+						}
 					}
 				}
 

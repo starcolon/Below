@@ -120,8 +120,21 @@ below.exits = function(grid){
  * @param {coord} destination point, if omitted, the default is set to the [first exit]
  * @returns {Array} array of coordinates representing the route
  */
-below.generateRoutes = function(grid,startCoord,endCoord){
-	
+below.generateRoute = function(grid,startCoord,endCoord){
+	// Rewrite the parameters if any of them is omitted
+	startCoord = startCoord || _.first(below.entrances(grid));
+	endCoord = endCoord || _.first(below.exits(grid));
+
+	var cost = function(value,coord){ return value['cost'] || 0 }
+	var isNotWall = function(value,coord){ return value['cost']>=0xFFFF }
+	var route = Grid
+		.routeOf(grid)
+		.from(startCoord.i,startCoord.j)
+		.to(endCoord.i,endCoord.j)
+		.astar(cost,true); // Enable verbose mode
+
+	console.log(route);
+	return route;
 }
 
 
