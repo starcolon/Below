@@ -359,9 +359,12 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 			 * Route from the beginning point to the ending point
 			 * using Lee's algorithm 
 			 * <a href="http://en.wikipedia.org/wiki/Lee_algorithm">http://en.wikipedia.org/wiki/Lee_algorithm</a>
+			 * @param {bool} verbose
 			 * @returns {Array} of route coordinates
 			 */
-			this.lee = function(){
+			this.lee = function(verbose){
+
+				verbose = verbose || false;
 
 				// Step#1 - Initialize the wave grid with all high value (not walkable)
 				var waveGrid = Grid.duplicate(grid);
@@ -410,6 +413,8 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 
 				function moveTowardsStart(pos,prev,route){
 					route.push({i:parseInt(pos[0]),j:parseInt(pos[1])});
+
+					if (verbose==true) console.log('route so far:'.cyan + JSON.stringify(route));
 
 					if (pos[0]==startAt[0] && pos[1]==startAt[1])
 						return route;

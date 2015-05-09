@@ -165,12 +165,12 @@ describe('@below test kit',function(){
 		settings.entrances = [{i:21,j:0}];
 		settings.exits = [{i:21,j:41}];
 		settings.walls = [];
-		for (i=0; i<12; i++){
+		/*for (i=0; i<12; i++){
 			settings.walls.push({i:i, j:13});
 		}
 		for (i=23; i<42; i++){
 			settings.walls.push({i:i, j:15});
-		}
+		}*/
 		settings.costFunction = function(value,coord){ return 1 };
 
 		before(function(done){
@@ -179,7 +179,8 @@ describe('@below test kit',function(){
 		})
 
 		it('should generate a simple route (no cost function)', function(){
-			var route = below.generateSimpleRoute(grid); // This will utilize Lee's route finder
+			var verbose = true;
+			var route = below.generateSimpleRoute(grid,verbose); // This will utilize Lee's route finder
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
 			expect(_.first(route)).to.deep.equal({i:21,j:0});
