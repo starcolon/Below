@@ -408,8 +408,8 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 				// until it finds the starting point.
 				// (Breadth-first search)
 
-				function moveTowardsStart(pos,route){
-					route.push({i:pos[0],j:pos[1]});
+				function moveTowardsStart(pos,prev,route){
+					route.push({i:parseInt(pos[0]),j:parseInt(pos[1])});
 
 					if (pos[0]==startAt[0] && pos[1]==startAt[1])
 						return route;
@@ -445,11 +445,29 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 				 		}
 				 	}
 
-				 	return moveTowardsStart(routeOptions[0].n,route);
+				 	if (routeOptions.length==0){
+				 		// If the current pos only leads to the dead end,
+				 		// mark it unwalkable
+				 		Grid.cell(parseInt(pos[0]),parseInt(pos[1])).set(waveGrid)(0xFF);
 
+				 		// Recess the route by one block
+				 		route = route.slice(0,route.length-1);
+
+				 		if (prev==null)
+				 			return [];
+				 		else{
+				 			var lastblock = route[route.length-1];
+				 			var prev0 = [lastblock.i, lastblock.j];
+				 			return moveTowardsStart(prev,prev0,route);
+				 		}
+				 	}
+				 	else {
+				 		// Best next path found, go on
+				 		return moveTowardsStart(routeOptions[0].n,pos,route);
+				 	}
 				}
 
-				var route = moveTowardsStart(endAt,[]);
+				var route = moveTowardsStart(endAt,null,[]);
 
 				// Reverse the route so it starts from the beginning and 
 				// ends at the ending

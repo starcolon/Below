@@ -112,6 +112,70 @@ below.exits = function(grid){
 	return exits;
 }
 
+/**
+ * Print the grid structure out to the console
+ * @param {grid}
+ * @param {Array} route - Array of the coordinates representing 
+ */
+below.illustrate = function(grid, route){
+	let lines = [];
+	route = route || [];
+	function isPartOfRoute(coord){
+		return _.any(route, function(r){
+			return r.i==coord.i && r.j==coord.j
+		})
+	}
+
+	for (var i in grid)
+		for (var j in grid[i]){
+			let cell = Grid.cell(parseInt(i),parseInt(j)).of(grid);
+			let block = ''
+			if (cell['isEntrance'])
+				block = '￬ '.cyan;
+			else if (cell['isExit'])
+				block = '￬ '.green;
+			else if (cell['cost']>=0xFFFF)
+				block = '☒ '.red;
+			else if (isPartOfRoute({i:parseInt(i),j:parseInt(j)}))
+				block = '★ '.green;
+			else
+				block = '☐ ';
+
+			if (!(j in lines))
+				lines[j] = ''
+
+			lines[j] += block;
+		}
+
+	for (var l in lines)
+		console.log(lines[l])
+}
+
+
+/**
+ * Given a grid with content, generate a simple route from the source cell to the destination
+ * using simple Lee's alogorthm (cost function does not make any differences)
+ * @param {grid} 
+ * @param {coord} starting point, if omitted, the default is set to the [first entrance]
+ * @param {coord} destination point, if omitted, the default is set to the [first exit]
+ * @returns {Array} array of coordinates representing the route
+ */
+below.generateSimpleRoute = function(grid,startCoord,endCoord){
+	// Rewrite the parameters if any of them is omitted
+	startCoord = startCoord || _.first(below.entrances(grid));
+	endCoord = endCoord || _.first(below.exits(grid));
+
+	var isNotWall = function(value,coord){ return value['cost']>=0xFFFF }
+	var route = Grid.routeOf(grid)
+		.from(startCoord.i,startCoord.j)
+		.to(endCoord.i,endCoord.j)
+		.where(isNotWall)
+		.lee();
+
+	console.log(route);
+	return route;
+}
+
 
 /**
  * Given a grid with content, generate possible routes from a source cell to the destination

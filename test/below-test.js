@@ -161,11 +161,16 @@ describe('@below test kit',function(){
 	describe('routing tests', function(){
 		var grid = []
 		var settings = below.settings.create();
-		settings.size = {width: 80, height: 80};
-		settings.entrances = [{i:0,j:0}];
-		settings.exits = [{i:79,j:79}];
-		settings.obstacles = [{i:50,j:0,obstacle:25}];
-		settings.walls = [{i:6,j:5},{i:7,j:5},{i:8,j:5}];
+		settings.size = {width: 42, height: 42};
+		settings.entrances = [{i:21,j:0}];
+		settings.exits = [{i:21,j:41}];
+		settings.walls = [];
+		for (i=0; i<12; i++){
+			settings.walls.push({i:i, j:13});
+		}
+		for (i=23; i<42; i++){
+			settings.walls.push({i:i, j:15});
+		}
 		settings.costFunction = function(value,coord){ return 1 };
 
 		before(function(done){
@@ -173,9 +178,21 @@ describe('@below test kit',function(){
 			done();
 		})
 
-		it('should find a route from the entrance to the exit',function(){
+		it('should generate a simple route (no cost function)', function(){
+			var route = below.generateSimpleRoute(grid); // This will utilize Lee's route finder
+			below.illustrate(grid,route);
+			route.should.have.length.above(2);
+			expect(_.first(route)).to.deep.equal({i:21,j:0});
+			expect(_.last(route)).to.deep.equal({i:21,j:41});
+		})
+
+
+		it.skip ('should find a route from the entrance to the exit',function(){
 			var route = below.generateRoute(grid);
-			console.log(route);
+			below.illustrate(grid,route);
+			route.should.have.length.above(2);
+			expect(_.first(route)).to.deep.equal({i:21,j:0});
+			expect(_.last(route)).to.deep.equal({i:21,j:41});
 		})
 
 	})
