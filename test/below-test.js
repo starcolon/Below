@@ -159,7 +159,7 @@ describe('@below test kit',function(){
 		})
 	})
 
-	describe.skip('routing tests', function(){
+	describe('routing tests', function(){
 		var grid = []
 		var settings = below.settings.create();
 		settings.size = {width: 42, height: 42};
@@ -179,7 +179,35 @@ describe('@below test kit',function(){
 			done();
 		})
 
-		it('should generate a simple route (no cost function)', function(){
+		it('should generate a short path between two points (no cost fn)', function(){
+			var verbose = true;
+			var route = below.generateSimpleRoute(
+				grid,
+				{i:7,j:0},
+				{i:15,j:10},
+				verbose
+			); // This will utilize Lee's route finder
+			below.illustrate(grid,route);
+			route.should.have.length.above(2);
+			expect(_.first(route)).to.deep.equal({i:7,j:0});
+			expect(_.last(route)).to.deep.equal({i:15,j:10});
+		})
+
+		it('should generate a short path between two points (with cost fn', function(){
+			var verbose = true;
+			var route = below.generateRoute(
+				grid,
+				{i:7,j:0},
+				{i:15,j:10},
+				verbose
+			); // This will utilize Lee's route finder
+			below.illustrate(grid,route);
+			route.should.have.length.above(2);
+			expect(_.first(route)).to.deep.equal({i:7,j:0});
+			expect(_.last(route)).to.deep.equal({i:15,j:10});
+		})
+
+		it.skip('should generate a simple route from @entrance --> @exit (no cost function)', function(){
 			var verbose = true;
 			var route = below.generateSimpleRoute(
 				grid,
@@ -194,7 +222,7 @@ describe('@below test kit',function(){
 		})
 
 
-		it ('should find a route from the entrance to the exit',function(){
+		it.skip ('should find a route from @entrance --> @exit',function(){
 			var route = below.generateRoute(grid);
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
