@@ -158,9 +158,10 @@ below.illustrate = function(grid, route){
  * @param {grid} 
  * @param {coord} starting point, if omitted, the default is set to the [first entrance]
  * @param {coord} destination point, if omitted, the default is set to the [first exit]
+ * @param {bool} verbose
  * @returns {Array} array of coordinates representing the route
  */
-below.generateSimpleRoute = function(grid,startCoord,endCoord){
+below.generateSimpleRoute = function(grid,startCoord,endCoord,verbose){
 	// Rewrite the parameters if any of them is omitted
 	startCoord = startCoord || _.first(below.entrances(grid));
 	endCoord = endCoord || _.first(below.exits(grid));
@@ -169,10 +170,9 @@ below.generateSimpleRoute = function(grid,startCoord,endCoord){
 	var route = Grid.routeOf(grid)
 		.from(startCoord.i,startCoord.j)
 		.to(endCoord.i,endCoord.j)
-		.where(isNotWall)
-		.lee();
+		//.where(isNotWall)
+		.lee(verbose);
 
-	console.log(route);
 	return route;
 }
 
@@ -182,9 +182,10 @@ below.generateSimpleRoute = function(grid,startCoord,endCoord){
  * @param {grid} 
  * @param {coord} starting point, if omitted, the default is set to the [first entrance]
  * @param {coord} destination point, if omitted, the default is set to the [first exit]
+ * @param {verbose} verbose
  * @returns {Array} array of coordinates representing the route
  */
-below.generateRoute = function(grid,startCoord,endCoord){
+below.generateRoute = function(grid,startCoord,endCoord,verbose){
 	// Rewrite the parameters if any of them is omitted
 	startCoord = startCoord || _.first(below.entrances(grid));
 	endCoord = endCoord || _.first(below.exits(grid));
@@ -195,9 +196,8 @@ below.generateRoute = function(grid,startCoord,endCoord){
 		.routeOf(grid)
 		.from(startCoord.i,startCoord.j)
 		.to(endCoord.i,endCoord.j)
-		.astar(cost,true); // Enable verbose mode
+		.astar(cost,verbose); // Enable verbose mode
 
-	console.log(route);
 	return route;
 }
 
