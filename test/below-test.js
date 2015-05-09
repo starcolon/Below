@@ -8,6 +8,7 @@ chai.config.includeStack = true;
 "use strict";
 
 // Module dependency
+var _ = require('underscore');
 var below = require('../below.js');
 var Grid = require('../modules/grid.js').Grid;
 
@@ -180,7 +181,12 @@ describe('@below test kit',function(){
 
 		it('should generate a simple route (no cost function)', function(){
 			var verbose = true;
-			var route = below.generateSimpleRoute(grid,verbose); // This will utilize Lee's route finder
+			var route = below.generateSimpleRoute(
+				grid,
+				settings.entrances[0],
+				settings.exits[0],
+				verbose
+			); // This will utilize Lee's route finder
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
 			expect(_.first(route)).to.deep.equal({i:21,j:0});
@@ -188,7 +194,7 @@ describe('@below test kit',function(){
 		})
 
 
-		it.skip ('should find a route from the entrance to the exit',function(){
+		it ('should find a route from the entrance to the exit',function(){
 			var route = below.generateRoute(grid);
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
