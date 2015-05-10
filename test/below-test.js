@@ -163,13 +163,13 @@ describe('@below test kit',function(){
 		var grid = []
 		var settings = below.settings.create();
 		settings.size = {width: 42, height: 42};
-		settings.entrances = [{i:21,j:0}];
-		settings.exits = [{i:21,j:41}];
+		settings.entrances = [{i:31,j:0}];
+		settings.exits = [{i:12,j:41}];
 		settings.walls = [];
-		for (i=0; i<12; i++){
+		for (i=0; i<18; i++){
 			settings.walls.push({i:i, j:13});
 		}
-		for (i=23; i<42; i++){
+		for (i=11; i<42; i++){
 			settings.walls.push({i:i, j:15});
 		}
 		settings.costFunction = function(value,coord){ return 1 };
@@ -180,34 +180,34 @@ describe('@below test kit',function(){
 		})
 
 		it('should generate a short path between two points (no cost fn)', function(){
-			var verbose = true;
+			var verbose = false;
 			var route = below.generateSimpleRoute(
 				grid,
-				{i:7,j:0},
-				{i:15,j:10},
+				{i:7,j:10},
+				{i:15,j:20},
 				verbose
 			); // This will utilize Lee's route finder
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
-			expect(_.first(route)).to.deep.equal({i:7,j:0});
-			expect(_.last(route)).to.deep.equal({i:15,j:10});
+			expect(_.first(route)).to.deep.equal({i:7,j:10});
+			expect(_.last(route)).to.deep.equal({i:15,j:20});
 		})
 
-		it('should generate a short path between two points (with cost fn', function(){
+		it.skip('should generate a short path between two points (with cost fn', function(){
 			var verbose = true;
 			var route = below.generateRoute(
 				grid,
-				{i:7,j:0},
-				{i:15,j:10},
+				{i:7,j:10},
+				{i:15,j:20},
 				verbose
 			); // This will utilize Lee's route finder
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
-			expect(_.first(route)).to.deep.equal({i:7,j:0});
-			expect(_.last(route)).to.deep.equal({i:15,j:10});
+			expect(_.first(route)).to.deep.equal({i:7,j:10});
+			expect(_.last(route)).to.deep.equal({i:15,j:20});
 		})
 
-		it.skip('should generate a simple route from @entrance --> @exit (no cost function)', function(){
+		it('should generate a simple route from @entrance --> @exit (no cost function)', function(){
 			var verbose = true;
 			var route = below.generateSimpleRoute(
 				grid,
@@ -217,8 +217,8 @@ describe('@below test kit',function(){
 			); // This will utilize Lee's route finder
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
-			expect(_.first(route)).to.deep.equal({i:21,j:0});
-			expect(_.last(route)).to.deep.equal({i:21,j:41});
+			expect(_.first(route)).to.deep.equal(settings.entrances[0]);
+			expect(_.last(route)).to.deep.equal(settings.exits[0]);
 		})
 
 
@@ -226,8 +226,8 @@ describe('@below test kit',function(){
 			var route = below.generateRoute(grid);
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
-			expect(_.first(route)).to.deep.equal({i:21,j:0});
-			expect(_.last(route)).to.deep.equal({i:21,j:41});
+			expect(_.first(route)).to.deep.equal(settings.entrances[0]);
+			expect(_.last(route)).to.deep.equal(settings.exits[0]);
 		})
 
 	})

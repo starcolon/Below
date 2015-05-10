@@ -166,11 +166,11 @@ below.generateSimpleRoute = function(grid,startCoord,endCoord,verbose){
 	startCoord = startCoord || _.first(below.entrances(grid));
 	endCoord = endCoord || _.first(below.exits(grid));
 
-	var isNotWall = function(value,coord){ return value['cost']>=0xFFFF }
+	var isNotWall = function(value,coord){ return value['cost']!=0xFFFF }
 	var route = Grid.routeOf(grid)
 		.from(startCoord.i,startCoord.j)
 		.to(endCoord.i,endCoord.j)
-		//.where(isNotWall)
+		.where(isNotWall)
 		.lee(verbose);
 
 	return route;
@@ -196,6 +196,7 @@ below.generateRoute = function(grid,startCoord,endCoord,verbose){
 		.routeOf(grid)
 		.from(startCoord.i,startCoord.j)
 		.to(endCoord.i,endCoord.j)
+		//.where(isNotWall)
 		.astar(cost,verbose); // Enable verbose mode
 
 	return route;
