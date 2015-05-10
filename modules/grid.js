@@ -366,149 +366,134 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 
 				verbose = verbose || false;
 
-				// Step#1 - Initialize the wave grid with all high value (not walkable)
-				var waveGrid = Grid.duplicate(grid);
-
-				// Mark walkable cells as zero
-				Grid.eachCellOf(waveGrid).where(self.walkable).setValue(0);
-				// Otherwise, assign them with very high value
-				Grid.eachCellOf(waveGrid).where(self.notWalkable).setValue(0xFF);
-
+				if (verbose==true){
+					console.log('Expanding neighbors ...');
+				}
 
 				// Step#2 - Wave expansion
+				var wave = {};
+				var waveCoords = {};
+				var Q = [];
 				function expandNeighbor(cell,magnitude){
-					var siblings = Grid.siblings(waveGrid)(cell[0],cell[1]);
-					if (siblings.length==0)
-						return;
-					var parents = [];
-					siblings.forEach(function(sib,n){
-						var m=sib[0], n=sib[1];
-						if (Grid.cell(m,n).of(waveGrid)==0){
-							// Set the value with the current magnitude
-							// if it has not been set
-							Grid.cell(m,n).set(waveGrid)(magnitude);
+					var siblings = Grid.siblings(grid)(cell[0],cell[1]);
+					siblings = _.filter(siblings, function(sib){
+						var i=sib[0], j=sib[1];
+						return self.walkable(Grid.cell(i,j).of(grid), {i:i, j:j}) &&
+							(!(i in waveCoords && j in waveCoords[i]))
+					});
 
-							// Add itself to the next parent list
+					if (siblings.length==0){
+						return;
+					}
+					
+					var parents = [];
+					siblings.forEach(function(sib){
+						var m=sib[0], n=sib[1];
+
+						// Skip if the cell has already been assigned the wave magnitude
+						if (!(m in waveCoords && n in waveCoords[m])){
+							if (!(m in waveCoords)){
+								waveCoords[m] = {};
+							};
+
+							waveCoords[m][n] = true;
+
+							if (!(magnitude in wave)){
+								wave[magnitude] = [];
+							}
+
+							wave[magnitude].push({i:m, j:n});
 							parents.push([m,n]);
 						}
 					});
-
 					// Expand each of children
 					magnitude ++;
-					parents.forEach(function(tuple){
-						expandNeighbor(tuple,magnitude);
-					})
+					if (parents.length>0){
+						parents.forEach(function(tuple){
+							//expandNeighbor(tuple,magnitude);
+							Q.push({c:tuple, mag:magnitude});
+						})
+					}
 				}
-
 				// Expand the wave from the beginning point
 				// where its value is initially set to 1
-				Grid.cell(startAt[0],startAt[1]).set(waveGrid)(1);
-				expandNeighbor(startAt,2);
+				wave[1] = [{i:startAt[0], j:startAt[1]}];
+				Q.push({c:startAt, mag:2});
 
-				if (verbose==true){
-					// Display wave matrix
-					let lines = [];
-
-					for (var i in waveGrid)
-						for (var j in waveGrid[i]){
-							let cell = Grid.cell(parseInt(i),parseInt(j)).of(waveGrid);
-							let block = ''
-
-							if (cell<10) block = '[ '+cell+' ]';
-							else if (cell<100) block = '[ '+cell+']';
-							else block = '['+cell+']';
-
-							if (!(j in lines))
-								lines[j] = ''
-
-							lines[j] += block;
-						}
-
-					for (var l in lines)
-						console.log(lines[l])
+				// Worker loop for wave expansion
+				while (Q.length){
+					var next = Q.splice(0,1)[0];
+					expandNeighbor(next.c, next.mag);
 				}
+
+				if (verbose==true)
+					console.log(wave);
 
 				// Step#3 - Backtrace
 				// Start at the ending point, step downwards along
 				// the descent of the wave magnitude
 				// until it finds the starting point.
 				// (Breadth-first search)
-
+				if (verbose){
+					console.log('Backtracing ...')
+				}
 				function moveTowardsStart(pos,prev,route){
-					route.push({i:parseInt(pos[0]),j:parseInt(pos[1])});
+					route.push({i:pos.i,j:pos.j});
 
-					/*if (verbose==true) {
-						console.log('route so far:'.cyan);
-						console.log(route);
-					}*/
-
-					if (pos[0]==startAt[0] && pos[1]==startAt[1])
+					// Stop finding if starting point has been found
+					if (pos.i==startAt[0] && pos.j==startAt[1])
 						return route;
 
-					var magnitude = Grid.cell(pos[0],pos[1]).of(waveGrid);
-
-					// List the neighbors
-					var neighbors = Grid.siblings(waveGrid)(pos[0],pos[1]);
-
-					if (neighbors.length==0)
-						return route;
+					// Identify the current magnitude
+					var magnitude = 0;
+					for (var mag in wave){
+						for (var c in wave[mag]){
+							if (wave[mag][c].i==pos.i && wave[mag][c].j==pos.j){
+								magnitude = mag; break;
+							}
+						}
+					}
 
 				 	// Go downwards the magnitude
-				 	var routeOptions = [];
-				 	for (var n in neighbors){
-				 		var n_magnitude = Grid.cell(neighbors[n][0], neighbors[n][1]).of(waveGrid);
-				 		// Only consider the descent path
-				 		if (n_magnitude < magnitude){
-				 			if (routeOptions.length>0 && n_magnitude>=routeOptions[0].magnitude)
-				 				continue;
-				 			// Add the neighbor to the route options array,
-				 			// smaller magnitude comes first
-				 			var insert_index = 0;
-				 			for (var k=0; k<routeOptions; k++,insert_index++){
-				 				if (routeOptions[k].magnitude>n_magnitude)
-				 					break;
-				 			}
-					 		routeOptions.splice(
-					 			insert_index,
-					 			0,
-					 			{n: neighbors[n], magnitude: n_magnitude}
-				 			);
-				 		}
-				 	}
-
-				 	if(verbose==true){
-				 		console.log( neighbors.length + ' neighbors expanded' );
-				 	}
-
-				 	if (routeOptions.length==0){
-				 		if (verbose==true)
-				 			console.log('No next paths found :('.red);
-
-				 		// If the current pos only leads to the dead end,
-				 		// mark it unwalkable
-				 		Grid.cell(parseInt(pos[0]),parseInt(pos[1])).set(waveGrid)(0xFF);
-
-				 		// Recess the route by one block
-				 		route = route.slice(0,route.length-1);
-
-				 		if (prev==null || (prev[0]==pos[0] && prev[1]==pos[1]))
-				 			return [];
-				 		else{
-				 			var lastblock = route[route.length-1];
-				 			var prev0 = [lastblock.i, lastblock.j];
+				 	var routeOptions = wave[magnitude-1];
+				 	for (var next_i in routeOptions){
+				 		var next = routeOptions[next_i];
+				 		// Must be sibling to the current cell
+				 		var distance = Math.abs(next.i-pos.i) + Math.abs(next.j-pos.j);
+				 		if (distance==1){
+				 			// Next candidate found!
 				 			if (verbose==true){
-				 				console.log('recess! '.red + JSON.stringify(prev0));
+				 				console.log('next {'+(magnitude-1)+'} --> ' + next.i + ',' + next.j);
+				 				if (route.length<8)
+				 					console.log('route: ' + JSON.stringify(route));
+				 				else 
+				 					console.log('route .... ' + JSON.stringify(route[route.length-1]));
 				 			}
-				 			return moveTowardsStart(prev,prev0,route);
+				 			return moveTowardsStart(next, pos, route);
 				 		}
 				 	}
-				 	else {
-				 		// Best next path found, go on
-				 		return moveTowardsStart(routeOptions[0].n,pos,route);
-				 	}
+
+				 	if (verbose==true)
+				 		console.log(('no next candidates found for {'+magnitude+'}').yellow);
+
+				 	// Encountering a dead end :(
+				 	// Recess to the previous block and add penalty to the current position
+				 	wave[magnitude] = _.filter(wave[magnitude], function(c){
+				 		return c.i!=pos.i && c.j!=pos.j
+				 	});
+				 	if (!(0xFFFF in wave))
+				 		wave[0xFFFF] = [];
+				 	wave[0xFFFF].push({i:pos.i,j:pos.j});
+
+				 	// Recess by one block
+				 	route = route.slice(0,route.length-1);
+				 	var lastblock = route[route.length-1];
+		 			if (verbose==true)
+		 				console.log('recess to '.red + JSON.stringify(lastblock));
+		 			return moveTowardsStart(prev, lastblock, route);
 				}
 
-				var route = moveTowardsStart(endAt,null,[]);
+				var route = moveTowardsStart({i:endAt[0], j:endAt[1]},null,[]);
 
 				// Reverse the route so it starts from the beginning and 
 				// ends at the ending
