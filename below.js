@@ -49,7 +49,7 @@ below.generate = function(settings){
 		throw 'The size must be properly defined';
 
 	// Create an empty grid, fill each cell with default structure 
-	let grid = Grid.create(settings.size.width, settings.size.height, {});
+	let grid = Grid.create(settings.size.height, settings.size.width, {});
 	Grid.eachOf(grid).applyProperty('isDug',function(){return false});
 	Grid.eachOf(grid).applyProperty('cost',function(){return 0});
 	Grid.eachOf(grid).applyProperty('items',function(){return []});
