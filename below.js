@@ -185,7 +185,7 @@ below.generateSimpleRoute = function(grid,startCoord,endCoord,verbose){
  * @param {verbose} verbose
  * @returns {Array} array of coordinates representing the route
  */
-below.generateRoute = function(grid,startCoord,endCoord,verbose){
+below.generateBestRoute = function(grid,startCoord,endCoord,verbose){
 	// Rewrite the parameters if any of them is omitted
 	startCoord = startCoord || _.first(below.entrances(grid));
 	endCoord = endCoord || _.first(below.exits(grid));
