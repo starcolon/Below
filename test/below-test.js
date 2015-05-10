@@ -172,6 +172,18 @@ describe('@below test kit',function(){
 		for (i=11; i<42; i++){
 			settings.walls.push({i:i, j:15});
 		}
+		for (i=0; i<23; i++){
+			settings.walls.push({i:i, j:18});
+		}
+		for (i=5; i<42; i++){
+			settings.walls.push({i:i, j:23});
+		}
+		for (i=16; i<42; i++){
+			settings.walls.push({i:i, j:35});
+		}
+		for (i=0; i<40; i++){
+			settings.walls.push({i:i, j:37});
+		}
 		settings.costFunction = function(value,coord){ return 1 };
 
 		before(function(done){
@@ -193,7 +205,7 @@ describe('@below test kit',function(){
 			expect(_.last(route)).to.deep.equal({i:15,j:20});
 		})
 
-		it.skip('should generate a short path between two points (with cost fn', function(){
+		it.skip('should generate a short path between two points (with cost fn)', function(){
 			var verbose = true;
 			var route = below.generateRoute(
 				grid,
@@ -208,7 +220,7 @@ describe('@below test kit',function(){
 		})
 
 		it('should generate a simple route from @entrance --> @exit (no cost function)', function(){
-			var verbose = true;
+			var verbose = false;
 			var route = below.generateSimpleRoute(
 				grid,
 				settings.entrances[0],

@@ -501,13 +501,148 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 				return route;
 			}
 
-
 			/**
 			 * Route.routeOf(grid).from(i,j).to(u,v).astar(costFunction)
 			 * @param {Function} cost - Cost function which takes (value, coord) and returns positive number cost value
 			 * @returns {Array} Route constructed with the algorithm
 			 **/
 			this.astar = function(cost,verbose){
+
+				verbose = verbose || false;
+
+				if (verbose==true)
+					console.log(JSON.stringify(startAt) + ' --> ' + JSON.stringify(endAt));
+
+				// If cost function is not defined,
+				// all coordinates make no cost difference
+				cost = cost || function(value,coord){
+					return 1
+				};
+
+				var closedSet = [];
+				var openSet = [{cost: 0, coord:{i:startAt[0], j:startAt[1]}}]; // Initially contains only the beginning point
+				var cameFrom = [];
+				var gScore = [{cost: 0, coord:{i:startAt[0], j:startAt[1]}}]; // Collection of the g scores of each point
+				var fScore = 0;
+
+				function sortByCost(a,b){ return a.cost<b.cost }
+				function isPermitted(c){
+					return self.walkable(Grid.cell(c[0],c[1]).of(grid), {i:c[0],j:c[1]})
+				}
+				function isInSet(set,coord){
+					return _.any(set, function(s){
+						return s.coord.i==coord.i && s.coord.j==coord.j
+					})
+				}
+				function getGScore(coord){
+					var coords = _.filter(gScore, function(c){ return c.coord.i==coord.i && c.coord.j==coord.j });
+					if (coords.length==0)
+						return cost(Grid.cell(coord.i,coord.j).of(grid), coord);
+					else
+						return coords[0].cost;
+				}
+				function setGScore(coord,g){
+					for (var k in gScore){
+						if (gScore[k].coord.i==coord.i && gScore[k].coord.j==coord.j){
+							// Update the existing score record
+							gScore[k].cost = g;
+							return ;
+						}
+					}
+
+					gScore.push({cost: g, coord:{i:coord.i, j:coord.j}});
+				}
+				function getCameFrom(dest){
+					for (var c in cameFrom){
+						if (cameFrom[c].to.i==dest.i && cameFrom[c].to.j==dest.j){
+							return cameFrom[c].from
+						}
+					}
+					throw 'Route breaks at' + JSON.stringify(dest);
+				}
+				function setCameFrom(src,dest){
+					for (var c in cameFrom){
+						if (cameFrom[c].to.i==dest.i && cameFrom[c].to.j==dest.j){
+							// Update the existing record
+							cameFrom[c].from = { i:src.i, j:src.j };
+							return ;
+						}
+					}
+
+					cameFrom.push({
+						to:{ i:dest.i, j:dest.j }, 
+						from:{ i:src.i, j:src.j }
+					});
+				}
+
+				while (openSet.length>0){
+					// Take an element from {openset} which has the smallest cost
+					var current = openSet.pop().coord;
+					if (current.i==endAt[0] && current.j==endAt[1]){
+						if (verbose==true)
+							console.log('Path fully reconstructed'.green);
+						break;
+					}
+
+					// Add {current} to {closedset}
+					closedSet.push({cost:0, coord:{i:current.i, j:current.j}});
+
+					var siblings = Grid.siblings(grid)(current.i, current.j);
+					siblings = _.filter(siblings, isPermitted);
+					if (verbose==true){
+						console.log('cells registered: ' + cameFrom.length);
+					}
+
+					siblings.forEach(function (s){
+						var sib = {i:s[0], j:s[1]};
+						if (!isInSet(closedSet, sib)){
+							var f_sib = cost(Grid.cell(sib.i,sib.j).of(grid), {i:sib.i, j:sib.j});
+							var g = getGScore(current) + f_sib;
+							if (!isInSet(openSet, sib) || g<getGScore(sib)){
+								setCameFrom(current, sib);
+								setGScore(sib, g);
+								// Add this sibling to the {openset}
+								openSet.push({cost:g, coord:{i:sib.i, j:sib.j}});
+								openSet.sort(sortByCost);
+							}
+						}
+					})
+				}
+
+				// Reconstruct the route
+				var pos = {i: endAt[0], j: endAt[1]};
+				var route = [];
+				if (verbose==true) 
+					console.log('constructing route ...'.green);
+
+				do {
+					route.push({i:pos.i, j:pos.j});
+					if (pos.i==startAt[0] && pos.j==startAt[1]){
+						// Complete route reconstructed
+						break;
+					}
+					
+					var from = getCameFrom(pos);
+					if (from==null){
+						console.log('Route breaks at '.red + JSON.stringify(from));
+						console.log(route);
+						break;
+					}
+					pos = from;
+				}
+				while (pos != null);
+
+				route.reverse();
+				return route;
+			}			
+
+
+			/**
+			 * Route.routeOf(grid).from(i,j).to(u,v).astar(costFunction)
+			 * @param {Function} cost - Cost function which takes (value, coord) and returns positive number cost value
+			 * @returns {Array} Route constructed with the algorithm
+			 **/
+			this.astar_old = function(cost,verbose){
 
 				verbose = verbose || false;
 
@@ -520,6 +655,8 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 				var routes = [
 					{G:0, R:[startAt]} // Initial point
 				];
+
+				var evaluated = {}; // Set containing the evaluated coordinates
 
 				function isEndPoint(coord){ return coord[0]==endAt[0] && coord[1]==endAt[1]}
 
@@ -543,9 +680,13 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 						var sib_coord = {i: sib[0], j: sib[1]};
 						return !self.walkable(sib_value, sib_coord )
 					}
+					function isEvaluated(sib){
+						return (!(sib[0] in evaluated && sib[1] in evaluated[sib[0]]))
+					}
 
 					siblings = _.reject(siblings, isRepeatInCurrent);
 					siblings = _.reject(siblings, isNotWalkable);
+					siblings = _.reject(siblings, isEvaluated);
 
 					// If the siblings include the ending point,
 					// just choose it as a sole outcome
@@ -560,6 +701,7 @@ Grid.routeOf = Grid.route = Grid.routing = function(grid){
 						var newroute = current.R.concat([sib]);
 						return {F: cost(sib_value, sib_coord), R: newroute}
 					});
+
 					return siblings;
 				}
 
