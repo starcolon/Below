@@ -205,8 +205,8 @@ describe('@below test kit',function(){
 			expect(_.last(route)).to.deep.equal({i:15,j:20});
 		})
 
-		it.skip('should generate a short path between two points (with cost fn)', function(){
-			var verbose = true;
+		it('should generate a short path between two points (with cost fn)', function(){
+			var verbose = false;
 			var route = below.generateRoute(
 				grid,
 				{i:7,j:10},
@@ -234,8 +234,10 @@ describe('@below test kit',function(){
 		})
 
 
-		it.skip ('should find a route from @entrance --> @exit',function(){
-			var route = below.generateRoute(grid);
+		it ('should find a route from @entrance --> @exit',function(){
+			// A*
+			var verbose = false;
+			var route = below.generateRoute(grid, settings.entrances[0], settings.exits[0], verbose);
 			below.illustrate(grid,route);
 			route.should.have.length.above(2);
 			expect(_.first(route)).to.deep.equal(settings.entrances[0]);
