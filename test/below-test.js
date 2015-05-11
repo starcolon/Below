@@ -234,7 +234,7 @@ describe('@below test kit',function(){
 		})
 
 
-		it ('should find a route from @entrance --> @exit',function(){
+		it ('should find a route from @entrance --> @exit',function(done){
 			// A*
 			var verbose = false;
 			var route = below.generateBestRoute(grid, settings.entrances[0], settings.exits[0], verbose);
@@ -242,6 +242,7 @@ describe('@below test kit',function(){
 			route.should.have.length.above(2);
 			expect(_.first(route)).to.deep.equal(settings.entrances[0]);
 			expect(_.last(route)).to.deep.equal(settings.exits[0]);
+			done();
 		})
 
 	})

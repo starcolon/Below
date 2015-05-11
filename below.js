@@ -196,7 +196,7 @@ below.generateBestRoute = function(grid,startCoord,endCoord,verbose){
 		.routeOf(grid)
 		.from(startCoord.i,startCoord.j)
 		.to(endCoord.i,endCoord.j)
-		//.where(isNotWall)
+		//.where(isNotWall) // NOTE: Do not need this because A* already skip the expensive path
 		.astar(cost,verbose); // Enable verbose mode
 
 	return route;
