@@ -227,6 +227,41 @@ below.array2d = {
 	},
 
 	/**
+	 * below.array2d.offset(grid,1000,1000)
+	 * Shift a grid by offset
+	 * @param {Grid}
+	 * @param {number} offset i (column) to shift the grid
+	 * @param {number} offset j (row) to shift the grid
+	 * @returns {Grid} the shifted grid
+	 */
+	offset: function(grid,offset_i,offset_j){
+		var output = []
+		for (var i in grid){
+			if (!(offset_i+i in output))
+				output[i+offset_i] = []
+			for (var j in grid[i]){
+				if (!(offset_j+j in output[i])){
+					output[i+offset_i][j+offset_j] = grid[i][j];
+				}
+			}
+		}
+		return output;
+	}
+
+	/**
+	 * Merge multiple grids together
+	 * @param {Array} of grids
+	 * @returns {Grid} single grid, merged.
+	 */
+	merge: function(grids){
+		var output = []
+
+
+		return output;
+	}
+
+
+	/**
 	 * below.array2d.pluck(grid,'cost')
 	 * Works similarly to underscor's pluck function on each cell
 	 * @param {Grid}
