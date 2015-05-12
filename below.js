@@ -250,12 +250,19 @@ below.array2d = {
 
 	/**
 	 * Merge multiple grids together
+	 * If any of them overlaps, the element from the grid at the lesser index has higher priority
 	 * @param {Array} of grids
 	 * @returns {Grid} single grid, merged.
 	 */
 	merge: function(grids){
 		var output = []
-
+		grids.reverse() // reverse the list of the grid, so the first becomes the last to process
+		for (var grid of grids){
+			Grid.eachOf(grid).do(function map(value,coord){
+				Grid.cell(coord.i, coord.j).set(output)(value);
+				return value; // Do not replace the old value of the source grid
+			})
+		}
 
 		return output;
 	}
