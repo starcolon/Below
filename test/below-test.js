@@ -157,6 +157,26 @@ describe('@below test kit',function(){
 				costFromMap[i].should.deep.equal(costFromPluck[i]);
 			}
 		})
+
+		it('should shift a grid with positive direction', function(){
+			var grid = Grid.create(25,25,{'content':42});
+			var grid_after = below.array2d.offset(grid,25,25);
+
+			for (var i=0; i<25; i++)
+				for (var j=0; j<25; j++){
+					expect(Grid.has(grid_after,i,j)).to.be.false;
+					expect(Grid.has(grid_after,i+25,j+25)).to.be.true;
+				}
+		})
+
+		it('should shift a grid with negative direction', function(){
+			var grid = Grid.create(512,512,{'content':42});
+			var grid_after = below.array2d.offset(grid,-200,-200);
+
+			expect(Grid.has(grid_after,311,311)).to.be.true;
+			expect(Grid.has(grid_after,312,312)).to.be.false;
+			expect(Grid.has(grid_after,-200,-200)).to.be.true;
+		})
 	})
 
 	describe('routing tests', function(){

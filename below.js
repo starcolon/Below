@@ -236,17 +236,14 @@ below.array2d = {
 	 */
 	offset: function(grid,offset_i,offset_j){
 		var output = []
-		for (var i in grid){
-			if (!(offset_i+i in output))
-				output[i+offset_i] = []
-			for (var j in grid[i]){
-				if (!(offset_j+j in output[i])){
-					output[i+offset_i][j+offset_j] = grid[i][j];
-				}
-			}
-		}
+		Grid.eachOf(grid).do(function shift(value,coord){
+			var new_i = parseInt(coord.i) + offset_i;
+			var new_j = parseInt(coord.j) + offset_j;
+			Grid.cell(new_i,new_j).set(output)(value);
+			return value; // Do not change the value of the old grid
+		});
 		return output;
-	}
+	},
 
 	/**
 	 * Merge multiple grids together
@@ -256,7 +253,7 @@ below.array2d = {
 	 */
 	merge: function(grids){
 		var output = []
-		grids.reverse() // reverse the list of the grid, so the first becomes the last to process
+		grids.reverse(); // reverse the list of the grid, so the first becomes the last to process
 		for (var grid of grids){
 			Grid.eachOf(grid).do(function map(value,coord){
 				Grid.cell(coord.i, coord.j).set(output)(value);
@@ -265,7 +262,7 @@ below.array2d = {
 		}
 
 		return output;
-	}
+	},
 
 
 	/**
