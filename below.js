@@ -254,11 +254,13 @@ below.array2d = {
 	 * @returns {Grid} single grid, merged.
 	 */
 	merge: function(grids){
-		var output = []
+		let output = [];
 		grids.reverse(); // reverse the list of the grid, so the first becomes the last to process
 		for (var grid of grids){
-			Grid.eachOf(grid).do(function map(value,coord){
-				Grid.cell(coord.i, coord.j).set(output)(value);
+			Grid.eachOf(grid).do(function (value,coord){
+				var i = parseInt(coord.i);
+				var j = parseInt(coord.j);
+				Grid.cell(i, j).set(output)(value);
 				return value; // Do not replace the old value of the source grid
 			})
 		}
