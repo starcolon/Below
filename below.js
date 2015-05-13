@@ -239,6 +239,8 @@ below.array2d = {
 		Grid.eachOf(grid).do(function shift(value,coord){
 			var new_i = parseInt(coord.i) + offset_i;
 			var new_j = parseInt(coord.j) + offset_j;
+			if (new_i * new_j < 0) 
+				return value;
 			Grid.cell(new_i,new_j).set(output)(value);
 			return value; // Do not change the value of the old grid
 		});

@@ -171,11 +171,30 @@ describe('@below test kit',function(){
 
 		it('should shift a grid with negative direction', function(){
 			var grid = Grid.create(512,512,{'content':42});
-			var grid_after = below.array2d.offset(grid,-200,-200);
+			var grid_after = below.array2d.offset(grid,512,512)
+			var grid_after = below.array2d.offset(grid_after,-24,-24);
 
-			expect(Grid.has(grid_after,311,311)).to.be.true;
-			expect(Grid.has(grid_after,312,312)).to.be.false;
-			expect(Grid.has(grid_after,-200,-200)).to.be.true;
+			expect(Grid.has(grid_after,999,999)).to.be.true;
+			expect(Grid.has(grid_after,1000,1000)).to.be.false;
+			expect(Grid.has(grid_after,512,512)).to.be.true;
+			expect(Grid.has(grid_after,480,480)).to.be.false;
+		})
+
+		it('should merge two grids', function(){
+			var grid1 = Grid.create(80,80,'A');
+			var grid2 = Grid.create(75,75,'B');
+			grid2 = below.array2d.offset(grid2, 80, 80);
+
+			grid3 = below.array2d.merge(grid1, grid2);
+
+			expect(Grid.has(grid3,0,0)).to.be.true;
+			expect(Grid.has(grid3,154,154)).to.be.true;
+			expect(Grid.has(grid3,200,200)).to.be.false;
+
+			expect(Grid.cell(0,0).of(grid3)).to.equal('A');
+			expect(Grid.cell(79,79)).of(grid3).to.equal('A');
+			expect(Grid.cell(80,80)).of(grid3).to.equal('B');
+			expect(Grid.cell(0,150)).of(grid3).to.equal('B');
 		})
 	})
 
