@@ -28,6 +28,7 @@ below.settings = {
 	 */
 	create: function(){
 		return {
+			offset: {i: 0, j: 0}, // Offset of the coordinate referenced in the real world
 			size: {width:0, height:0}, // Positive integers
 			entrances: [], // Array of coordinates {i,j}
 			exits: [], // Array of coordinates {i,j}
@@ -49,6 +50,7 @@ below.generate = function(settings){
 		throw 'The size must be properly defined';
 
 	// Create an empty grid, fill each cell with default structure 
+	// TAOTODO: Account for {offset}
 	let grid = Grid.create(settings.size.height, settings.size.width, {});
 	Grid.eachOf(grid).applyProperty('isDug',function(){return false});
 	Grid.eachOf(grid).applyProperty('cost',function(){return 0});
