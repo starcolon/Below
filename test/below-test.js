@@ -186,7 +186,7 @@ describe('@below test kit',function(){
 			var grid2 = Grid.create(75,75,'B');
 			grid3 = below.array2d.offset(grid2, 80, 80);
 			grid4 = below.array2d.merge(grid1, grid3);
-			
+
 			expect(Grid.has(grid4,0,0)).to.be.true;
 			expect(Grid.has(grid4,154,154)).to.be.true;
 			expect(Grid.has(grid4,200,200)).to.be.false;

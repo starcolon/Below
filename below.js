@@ -261,11 +261,14 @@ below.array2d = {
 		var output = [];
 		grids.reverse(); // reverse the list of the grid, so the first becomes the last to process
 		for (var grid of grids){
-			Grid.eachOf(grid).do(function (value,coord){
-				var i = parseInt(coord.i);
-				var j = parseInt(coord.j);
-				Grid.cell(i, j).set(output)(value);
-			})
+			for (var u in grid){
+				if (!(u in output))
+					output[u] = [];
+				for (var v in grid[u]){
+					if (!(v in output[u]))
+						output[u][v] = grid[u][v];
+				}
+			}
 		}
 
 		return output;
