@@ -237,14 +237,16 @@ below.array2d = {
 	 * @returns {Grid} the shifted grid
 	 */
 	offset: function(grid,offset_i,offset_j){
-		var output = []
+		var output = [];
 		Grid.eachOf(grid).do(function shift(value,coord){
 			var new_i = parseInt(coord.i) + offset_i;
 			var new_j = parseInt(coord.j) + offset_j;
-			if (new_i * new_j < 0) 
-				return value;
-			Grid.cell(new_i,new_j).set(output)(value);
-			return value; // Do not change the value of the old grid
+			if (new_i * new_j >= 0) {
+				if (!(new_i in output)){
+					output[new_i] = [];
+				}
+				output[new_i][new_j] = value;
+			}
 		});
 		return output;
 	},
@@ -256,14 +258,13 @@ below.array2d = {
 	 * @returns {Grid} single grid, merged.
 	 */
 	merge: function(grids){
-		let output = [];
+		var output = [];
 		grids.reverse(); // reverse the list of the grid, so the first becomes the last to process
 		for (var grid of grids){
 			Grid.eachOf(grid).do(function (value,coord){
 				var i = parseInt(coord.i);
 				var j = parseInt(coord.j);
 				Grid.cell(i, j).set(output)(value);
-				return value; // Do not replace the old value of the source grid
 			})
 		}
 

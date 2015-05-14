@@ -169,31 +169,32 @@ describe('@below test kit',function(){
 				}
 		})
 
-		it.skip('should shift a grid with negative direction', function(){
+		it('should shift a grid with negative direction', function(done){
 			var grid = Grid.create(512,512,{'content':42});
-			var grid_after = below.array2d.offset(grid,512,512)
-			var grid_after = below.array2d.offset(grid_after,-24,-24);
+			var grid_after = below.array2d.offset(grid,512,512);
+			var grid_after2 = below.array2d.offset(grid_after,-24,-24);
 
-			expect(Grid.has(grid_after,999,999)).to.be.true;
-			expect(Grid.has(grid_after,1000,1000)).to.be.false;
-			expect(Grid.has(grid_after,512,512)).to.be.true;
-			expect(Grid.has(grid_after,480,480)).to.be.false;
+			expect(Grid.has(grid_after2,999,999)).to.be.true;
+			expect(Grid.has(grid_after2,1000,1000)).to.be.false;
+			expect(Grid.has(grid_after2,512,512)).to.be.true;
+			expect(Grid.has(grid_after2,480,480)).to.be.false;
+			done();
 		})
 
-		it.skip('should merge two grids', function(){
+		it('should merge two grids', function(){
 			var grid1 = Grid.create(80,80,'A');
 			var grid2 = Grid.create(75,75,'B');
-			grid2 = below.array2d.offset(grid2, 80, 80);
+			grid3 = below.array2d.offset(grid2, 80, 80);
+			grid4 = below.array2d.merge(grid1, grid3);
+			
+			expect(Grid.has(grid4,0,0)).to.be.true;
+			expect(Grid.has(grid4,154,154)).to.be.true;
+			expect(Grid.has(grid4,200,200)).to.be.false;
+			expect(Grid.cell(0,0).of(grid4)).to.equal('A');
+			expect(Grid.cell(79,79).of(grid4)).to.equal('A');
+			expect(Grid.cell(80,80).of(grid4)).to.equal('B');
+			expect(Grid.cell(0,150).of(grid4)).to.equal('B');
 
-			grid3 = below.array2d.merge(grid1, grid2);
-
-			expect(Grid.has(grid3,0,0)).to.be.true;
-			expect(Grid.has(grid3,154,154)).to.be.true;
-			expect(Grid.has(grid3,200,200)).to.be.false;
-			expect(Grid.cell(0,0).of(grid3)).to.equal('A');
-			expect(Grid.cell(79,79)).of(grid3).to.equal('A');
-			expect(Grid.cell(80,80)).of(grid3).to.equal('B');
-			expect(Grid.cell(0,150)).of(grid3).to.equal('B');
 		})
 	})
 

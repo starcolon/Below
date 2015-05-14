@@ -931,9 +931,9 @@ Grid.cell = function(i,j){
 	 */
 	this.set = function(grid){
 		return function(value){
-			if (self.isNotIn(grid))
-				self.addTo(grid);
-			grid[coord.i][coord.j] = value;
+			if (!(i in grid)) 
+				grid[i] = [];
+			grid[i][j] = value;
 		}
 	}
 
@@ -1106,7 +1106,9 @@ Grid.eachCellOf = Grid.eachOf = function(grid){
 		for (var i in grid)
 			for (var j in grid[i])
 				if (self.cellFilter(grid[i][j],{i:i,j:j})){
-					grid[i][j] = F(grid[i][j],{i:i,j:j});
+					var ret_val = F(grid[i][j],{i:parseInt(i),j:parseInt(j)});
+					if (typeof(ret_val)!='undefined')
+						grid[i][j] = ret_val;
 					++count;
 				}
 		return count;
