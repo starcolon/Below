@@ -80,6 +80,22 @@ var to = {i:50,j:30};
 var route = below.generateBestRoute( grid, from, to );
 ```
 
+## Two-dimensional array operators
+### Translate the entire grid by specific displacement
+For example, if you want to translate your 50x50 grid by 20 cells to the right and 35 cells downwards, do this:
+```javascript
+var grid = Grid.create(50,50,'foo');
+var displaced = below.array2d.offset(grid,20,35);
+```
+
+### Merge grids together
+This is a piece of cake. You can just merge any grids together with this expression below:
+```javascript
+var grid1 = Grid.create(20,20,'A');
+var grid2 = below.array2d.offset(Grid.create(100,100,'B'),21,0);
+var mergedGrid = below.array2d.merge(grid1, grid2); 
+```
+
 
 
 
