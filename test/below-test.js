@@ -299,4 +299,12 @@ describe('@below test kit',function(){
 		})
 
 	})
+
+	describe.skip('mongodb interface tests', function(){
+
+		// TAOTODO: Write test cases for mongodb interface
+
+
+
+	})
 })

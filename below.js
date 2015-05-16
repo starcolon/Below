@@ -254,8 +254,8 @@ below.mongo = {
 				for (var v of Object.keys(grid[u])){
 					// Each cell u,v
 					if (criteria(grid[u][v]), {i:parseInt(u), j:parseInt(j)}){
-						let criteria = {coord: [parseInt(u),parseInt(v)]};
-						let record = {coord: [parseInt(u),parseInt(v)], data: grid[u][v]};
+						let criteria = {u:parseInt(u), v:parseInt(v)};
+						let record = {u:parseInt(u), v:parseInt(v), data: grid[u][v]};
 						let options = {upsert: true};
 						pp.db.collection(pp.collection).update(criteria, record, options, function(err,count){
 							if (err){
@@ -279,11 +279,28 @@ below.mongo = {
 	 * @param {Object} constraint of loading
 	 */
 	load: function(constraint){
+		constraint = constraint || {i0:0, j0:0, iN:41, jN:41}; // iN and jN represent the max i and j to loaded, respectively
+		// Make query conditions from the given constraint
+		let scope = {
+			u: {'$gte':constraint.i0, '$lte':constraint.iN},
+			v: {'$gte':constraint.j0, '$lte':constraint.jN}
+		}
 		return function(pp){
+			let grid = [];
 			// Load the record from the db
-			pp.db.collection(pp.collection).findAll(function(err, lesson){  
-				// TAOTODO:
+			pp.db.collection(pp.collection).find(scope).toArray(function(err,records){
+				if (err){
+					console.err(err.toString().red);
+					return false;
+				}
+				// Fill the record in the destination grid
+				records.forEach(function(r){
+					let i = parseInt(r.u); 
+					let j = parseInt(r.v);
+					Grid.cell(i,j).setTo(grid)(r.data);
+				});
 			});
+			return grid;
 		}
 	},
 
