@@ -20,8 +20,9 @@
     "colors": "*",
     "express": "*",
     "mocha": "*",
-    "mongodb": "1.4.28",
+    "mongodb": "^1.4.28",
     "mongoskin": "^1.4.13",
-    "underscore": "*"
+    "underscore": "*",
+    "promise": "*"
   }
 }

@@ -10,6 +10,7 @@
 
 // Dependencies
 var _ = require('underscore');
+var promise = require('promise');
 var Grid = require('./modules/grid.js').Grid;
 
 
@@ -202,6 +203,54 @@ below.generateBestRoute = function(grid,startCoord,endCoord,verbose){
 		.astar(cost,verbose); // Enable verbose mode
 
 	return route;
+}
+
+/**
+ * MongoDB connectivity
+ */
+below.mongo = {
+	/**
+	 * Initialize a connection to the mongo db server
+	 * @param {string} server address
+	 * @param {string} database name to access
+	 * @param {string} collection name to access
+	 * @returns {Promise} takes the function itself as parameter
+	 */
+	init: function(server,dbName,collection){
+		// Initialize the required modules
+		let pp = { db: undefined };
+
+		new promise(function(fullfill,reject){
+			// Try initializing the database connection
+			try {
+				server = server || 'mongodb://localhost';
+				dbName = dbName || 'default';
+				pp.db = require('mongoskin').db(server+dbName);
+				if (typeof(pp.db)=='undefined'){
+					console.error('Unable to initialize mongoskin'.red);
+					reject();
+				}
+
+				// Load the lessons from mongo
+				pp.db.collection(collectionName).findOne(function(err, lesson){  
+					if(err) { 
+						self.clear();
+						console.error('Unable to connect to mongo!')
+						console.error(err);  
+						reject();
+					}
+
+					// Connection goes alright
+					fullfill(pp);
+				});
+			}
+			catch (e){
+				// You shall not pass!
+				console.error(e.toString().red);
+				reject();
+			}
+		});
+	}
 }
 
 
