@@ -196,13 +196,19 @@ describe('@below test kit',function(){
 			expect(Grid.cell(120,150).of(grid4)).to.equal('B');
 		})
 
-		it.skip('should merge two grids which absolutely overlap each other', function(){
+		it('should merge two grids which absolutely overlap each other', function(){
 			var grid1 = Grid.create(50,50,0);
-			var grid2 = Grid.create(50,50,{foo:'bar'});
+			var grid2 = Grid.create(35,35,{});
+			Grid.eachOf(grid2).setTo({foo:'bar'});
 
-			var grid3 = below.merge(grid1, grid2);
+			var grid3 = below.array2d.merge(grid1, grid2);
 
-			// TAOTODO: Write test cases
+			expect(Grid.has(grid3,49,49)).to.be.true;
+			expect(Grid.cell(0,0).of(grid3)).to.deep.equal({foo:'bar'});
+			expect(Grid.cell(24,0).of(grid3)).to.deep.equal({foo:'bar'});
+			expect(Grid.cell(34,34).of(grid3)).to.deep.equal({foo:'bar'});
+			expect(Grid.cell(35,35).of(grid3)).to.deep.equal(0);
+			expect(Grid.cell(49,25).of(grid3)).to.equal(0);
 		})
 	})
 
