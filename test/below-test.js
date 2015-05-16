@@ -193,8 +193,16 @@ describe('@below test kit',function(){
 			expect(Grid.cell(0,0).of(grid4)).to.equal('A');
 			expect(Grid.cell(79,79).of(grid4)).to.equal('A');
 			expect(Grid.cell(80,80).of(grid4)).to.equal('B');
-			expect(Grid.cell(0,150).of(grid4)).to.equal('B');
+			expect(Grid.cell(120,150).of(grid4)).to.equal('B');
+		})
 
+		it.skip('should merge two grids which absolutely overlap each other', function(){
+			var grid1 = Grid.create(50,50,0);
+			var grid2 = Grid.create(50,50,{foo:'bar'});
+
+			var grid3 = below.merge(grid1, grid2);
+
+			// TAOTODO: Write test cases
 		})
 	})
 

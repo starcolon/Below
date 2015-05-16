@@ -239,10 +239,10 @@ below.array2d = {
 	offset: function(grid,offset_i,offset_j){
 		var output = [];
 		Grid.eachOf(grid).do(function shift(value,coord){
-			var new_i = parseInt(coord.i) + offset_i;
-			var new_j = parseInt(coord.j) + offset_j;
+			var new_i = parseInt(parseInt(coord.i) + offset_i);
+			var new_j = parseInt(parseInt(coord.j) + offset_j);
 			if (new_i * new_j >= 0) {
-				if (!(new_i in output)){
+				if (!(output.hasOwnProperty(new_i))){
 					output[new_i] = [];
 				}
 				output[new_i][new_j] = value;
@@ -254,23 +254,24 @@ below.array2d = {
 	/**
 	 * Merge multiple grids together
 	 * If any of them overlaps, the element from the grid at the lesser index has higher priority
-	 * @param {Array} of grids
+	 * @param {grid} accept unlimited number of grids to merge into one
 	 * @returns {Grid} single grid, merged.
 	 */
-	merge: function(grids){
-		var output = [];
+	merge: function(){
+		let output = [];
+		let grids = _.values(arguments); // read grids from the variable arguments
+
 		grids.reverse(); // reverse the list of the grid, so the first becomes the last to process
 		for (var grid of grids){
-			for (var u in grid){
-				if (!(u in output))
+			for (var u of Object.keys(grid)){
+				if (!(output.hasOwnProperty(u)))
 					output[u] = [];
-				for (var v in grid[u]){
-					if (!(v in output[u]))
+				for (var v of Object.keys(grid[u])){
+					if (!(output[u].hasOwnProperty(v)))
 						output[u][v] = grid[u][v];
 				}
 			}
 		}
-
 		return output;
 	},
 
