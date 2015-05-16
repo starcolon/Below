@@ -218,7 +218,7 @@ below.mongo = {
 	 */
 	init: function(server,dbName,collection){
 		// Initialize the required modules
-		let pp = { db: undefined };
+		let pp = { db: undefined, collection: collection };
 
 		new promise(function(fullfill,reject){
 			// Try initializing the database connection
@@ -231,18 +231,7 @@ below.mongo = {
 					reject();
 				}
 
-				// Load the lessons from mongo
-				pp.db.collection(collectionName).findOne(function(err, lesson){  
-					if(err) { 
-						self.clear();
-						console.error('Unable to connect to mongo!')
-						console.error(err);  
-						reject();
-					}
-
-					// Connection goes alright
-					fullfill(pp);
-				});
+				fullfill(pp);
 			}
 			catch (e){
 				// You shall not pass!
@@ -250,7 +239,54 @@ below.mongo = {
 				reject();
 			}
 		});
-	}
+	},
+
+	/**
+	 * Save the grid to the database
+	 * @param {Grid}
+	 * @param {Function} criteria function which takes a cell value and its coordinate as arguments
+	 */
+	save: function(grid,criteria){
+		return function(pp){
+			let numSaved = 0;
+			criteria = criteria || function(whatever){ return true };
+			for (var u of Object.keys(grid)){
+				for (var v of Object.keys(grid[u])){
+					// Each cell u,v
+					if (criteria(grid[u][v]), {i:parseInt(u), j:parseInt(j)}){
+						let criteria = {coord: [parseInt(u),parseInt(v)]};
+						let record = {coord: [parseInt(u),parseInt(v)], data: grid[u][v]};
+						let options = {upsert: true};
+						pp.db.collection(pp.collection).update(criteria, record, options, function(err,count){
+							if (err){
+								console.error(('cell ['+u+','+v+'] failed to save :(').red);
+							}
+							else{
+								console.log('cell ['+u+','+v+'] saved!');
+								numSaved += count;
+							}
+						});
+					}
+				}
+			}
+
+			return numSaved;
+		}
+	},
+
+	/**
+	 * Load the grid from the database
+	 * @param {Object} constraint of loading
+	 */
+	load: function(constraint){
+		return function(pp){
+			// Load the record from the db
+			pp.db.collection(pp.collection).findAll(function(err, lesson){  
+				// TAOTODO:
+			});
+		}
+	},
+
 }
 
 
