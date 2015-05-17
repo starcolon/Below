@@ -300,10 +300,32 @@ describe('@below test kit',function(){
 
 	})
 
-	describe.skip('mongodb interface tests', function(){
+	describe('mongodb interface tests', function(){
 
-		// TAOTODO: Write test cases for mongodb interface
+		it('should save the grid to the database', function(done){
+			var settings = below.settings.create();
+			settings.size = {width: 16, height: 16};
+			settings.entrances = [{i:0,j:0},{i:15,j:15}];
+			settings.exits = [{i:0,j:15}];
+			settings.items = [{i:12,j:12,item:'apple'},{i:10,j:14,item:'pencil'}];
+			settings.obstacles = [{i:1,j:0,obstacle:255}];
+			settings.costFunction = Math.abs;
+			settings.walls = Array.apply(null, new Array(15)).map(function(a,i){
+				return {i:parseInt(i),j:10}
+			});
+			
+			var grid = below.generate(settings);
+			var saveAll = function(){return true};
 
+			below.mongo.init(null,'gridsample','grid').then(below.mongo.save(grid,saveAll)).done(function(n){
+				console.log(n.toString().yellow + ' records saved!'.yellow);
+				done();
+			});
+		})
+
+		it.skip('should load the grid from the database', function(){
+			// TAOTOD:
+		})
 
 
 	})

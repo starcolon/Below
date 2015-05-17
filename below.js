@@ -220,23 +220,31 @@ below.mongo = {
 		// Initialize the required modules
 		let pp = { db: undefined, collection: collection };
 
-		new promise(function(fullfill,reject){
+		return new promise(function(fullfill,reject){
 			// Try initializing the database connection
 			try {
 				server = server || 'mongodb://localhost';
-				dbName = dbName || 'default';
-				pp.db = require('mongoskin').db(server+dbName);
+				dbName = dbName || 'test';
+				pp.db = require('mongoskin').db(server+'/'+dbName);
+
+				console.log('    initialized a connection to :'.cyan + server );
+				console.log('    db : '.cyan + dbName);
+				console.log('    collection : '.cyan + collection);
+
 				if (typeof(pp.db)=='undefined'){
 					console.error('Unable to initialize mongoskin'.red);
-					reject();
+					reject('failed to connect to the database');
 				}
-
-				fullfill(pp);
+				else{
+					// TAOTODO: check if the collection we're looking for exists in the database
+					function logSaved(n){ console.log( n + ' records saved.') }
+					fullfill(pp);
+				}
 			}
 			catch (e){
 				// You shall not pass!
 				console.error(e.toString().red);
-				reject();
+				reject(e);
 			}
 		});
 	},
@@ -248,29 +256,54 @@ below.mongo = {
 	 */
 	save: function(grid,criteria){
 		return function(pp){
-			let numSaved = 0;
 			criteria = criteria || function(whatever){ return true };
+			console.log('saving the grid ... to #'+pp.collection);
+
+			let recordBag = [];
+
+			// Store the record bag for later database serialization
 			for (var u of Object.keys(grid)){
 				for (var v of Object.keys(grid[u])){
-					// Each cell u,v
-					if (criteria(grid[u][v]), {i:parseInt(u), j:parseInt(j)}){
+					if (criteria(grid[u][v]), {i:parseInt(u), j:parseInt(v)}){
 						let criteria = {u:parseInt(u), v:parseInt(v)};
 						let record = {u:parseInt(u), v:parseInt(v), data: grid[u][v]};
-						let options = {upsert: true};
-						pp.db.collection(pp.collection).update(criteria, record, options, function(err,count){
-							if (err){
-								console.error(('cell ['+u+','+v+'] failed to save :(').red);
-							}
-							else{
-								console.log('cell ['+u+','+v+'] saved!');
-								numSaved += count;
-							}
-						});
+						recordBag.push({criteria: criteria, record: record});
 					}
 				}
 			}
+			console.log('data collection prepared ... [' + recordBag.length + ' records queued]');
 
-			return numSaved;
+
+			// Serialize the data		
+			let numSaved = 0;
+			return new promise(function(done,err){
+				(function saveToDB(){
+					if (recordBag.length==0){
+						// All done!
+						console.log('done!'.green);
+						return done(numSaved);
+					}
+					let options = {upsert: true};
+					let nextUp = recordBag.pop(); // Take the next element to save
+
+					if (typeof(nextUp)=='undefined' || nextUp==null){
+						// Nothing to pop
+						return done(numSaved);
+					}
+
+					pp.db.collection(pp.collection).update(nextUp.criteria, nextUp.record, options, function(err,count){
+						if (err){
+							console.log('unable to save this record');
+							err('cell ['+nextUp.record.u+','+nextUp.record.v+'] failed to save :(');
+						}
+						else{
+							numSaved += count;
+							// Next record
+							saveToDB();
+						}
+					});
+				})(); // end of `saveToDB`
+			});
 		}
 	},
 
