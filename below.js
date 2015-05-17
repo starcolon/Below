@@ -321,19 +321,24 @@ below.mongo = {
 		return function(pp){
 			let grid = [];
 			// Load the record from the db
-			pp.db.collection(pp.collection).find(scope).toArray(function(err,records){
-				if (err){
-					console.err(err.toString().red);
-					return false;
-				}
-				// Fill the record in the destination grid
-				records.forEach(function(r){
-					let i = parseInt(r.u); 
-					let j = parseInt(r.v);
-					Grid.cell(i,j).setTo(grid)(r.data);
+			return new promise(function(done,reject){
+				pp.db.collection(pp.collection).find(scope).toArray(function(err,records){
+					if (err){
+						console.err(err.toString().red);
+						return reject();
+					}
+					// Fill the record in the destination grid
+					let nLoaded = 0;
+					records.forEach(function(r){
+						let i = parseInt(r.u); 
+						let j = parseInt(r.v);
+						Grid.cell(i,j).setTo(grid)(r.data);
+						nLoaded ++;
+					});
+					console.log( nLoaded + ' grid cells loaded');
 				});
+				return done(grid);
 			});
-			return grid;
 		}
 	},
 
