@@ -335,5 +335,19 @@ describe('@below test kit',function(){
 			});
 		})
 
+		it.skip('should partially save the database and partially load the portion back', function(done){
+			var isInSavingRegion = function(v,coord){
+				return parseInt(coord.i)<5
+			}
+			var g = Grid.create(20,20,{});
+			Grid.eachOf(g).where(isInSavingRegion).setTo({'foo':'baz'});
+
+			below.mongo.init(null,'gridsample','grid').then(below.mongo.save(g,isInSavingRegion)).done(function(n){
+				expect(n).to.equal(100);
+				done();
+			})
+
+		})
+
 	})
 })

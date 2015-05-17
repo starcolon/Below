@@ -257,17 +257,15 @@ below.mongo = {
 	save: function(grid,criteria){
 		return function(pp){
 			criteria = criteria || function(whatever){ return true };
-			console.log('saving the grid ... to #'+pp.collection);
-
 			let recordBag = [];
 
 			// Store the record bag for later database serialization
 			for (var u of Object.keys(grid)){
 				for (var v of Object.keys(grid[u])){
-					if (criteria(grid[u][v]), {i:parseInt(u), j:parseInt(v)}){
-						let criteria = {u:parseInt(u), v:parseInt(v)};
+					if (criteria(grid[u][v], {i:parseInt(u), j:parseInt(v)})){
+						let crit = {u:parseInt(u), v:parseInt(v)};
 						let record = {u:parseInt(u), v:parseInt(v), data: grid[u][v]};
-						recordBag.push({criteria: criteria, record: record});
+						recordBag.push({criteria: crit, record: record});
 					}
 				}
 			}
