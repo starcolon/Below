@@ -9,6 +9,15 @@ As simple as getting an F grade in the first semester, you can simply just `requ
 var below = require('./below.js');
 ```
 
+Or access from NPM registry:
+```bash
+npm install below
+```
+
+```javascript
+var below = require('below'); // awesome
+```
+
 ## Generating a Grid from settings
 As mentioned on the top of this document, Below library does extend functionalities of `Grid` for spatial routing app. You can eaither create a grid data structure using conventional Grid library or create it on the fly with a help of Below library.
 
