@@ -96,6 +96,25 @@ var grid2 = below.array2d.offset(Grid.create(100,100,'B'),21,0);
 var mergedGrid = below.array2d.merge(grid1, grid2); 
 ```
 
+## Interface with MongoDB
+The library primarily aims to be implemented for interfacing with MongoDB. You can serialize the entire grid or even some portion of it to your collection on Mongodb with only just a one-liner command as exhibited below:
+
+### Save the grid to Mongo
+```javascript
+below.mongo.init('mongodb://localhost','db_name','collection_name').then(below.mongo.save(grid)).done();
+```
+
+### Load the grid from Mongo
+```javascript
+var constraint = {i0:0, j0:0, iN:1000, jN:1000}; // i0,j0 denote top-left corner coordinate
+                                                 // whereas iN,jN denote bottom-right corner coordinate
+below.mongo.init('mongodb://localhost','db_name','collection_name')
+	.then(below.mongo.load(constraint))
+	.done(function takeTheOutput(grid){ /* blah blah */ });
+```
+
+NOTE: Both save and load function return a promise object. You will need to handle the feedback from them with `done` or `error` method. This is strictly due to the fact that the interface with the database likely has some latency so the operations are handled asynchronously.
+
 
 
 
