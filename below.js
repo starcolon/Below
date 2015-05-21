@@ -51,7 +51,6 @@ below.generate = function(settings){
 		throw 'The size must be properly defined';
 
 	// Create an empty grid, fill each cell with default structure 
-	// TAOTODO: Account for {offset}
 	let grid = Grid.create(settings.size.height, settings.size.width, {});
 	Grid.eachOf(grid).applyProperty('isDug',function(){return false});
 	Grid.eachOf(grid).applyProperty('cost',function(){return 0});
@@ -209,6 +208,12 @@ below.generateBestRoute = function(grid,startCoord,endCoord,verbose){
  * MongoDB connectivity
  */
 below.mongo = {
+
+	// DESIGN NOTE: 
+	// 	All functions of {below.mongdo} return promises.
+	//	This is specifically a design pattern for asynchronous use.
+
+
 	/**
 	 * Initialize a connection to the mongo db server
 	 * @param {string} server address
