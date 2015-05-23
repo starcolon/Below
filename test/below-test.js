@@ -45,7 +45,6 @@ describe('@below test kit',function(){
 			expect(Grid.has(grid,80,80)).to.be.false;
 
 			for (var j in grid[0]){
-				expect(grid[0][j]).to.have.property('isDug');
 				expect(grid[0][j]).to.have.property('cost');
 				expect(grid[0][j]).to.have.property('items');
 			}

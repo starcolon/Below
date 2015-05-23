@@ -52,8 +52,7 @@ below.generate = function(settings){
 
 	// Create an empty grid, fill each cell with default structure 
 	let grid = Grid.create(settings.size.height, settings.size.width, {});
-	Grid.eachOf(grid).applyProperty('isDug',function(){return false});
-	Grid.eachOf(grid).applyProperty('cost',function(){return 0});
+	Grid.eachOf(grid).applyProperty('cost',function(){return 1});
 	Grid.eachOf(grid).applyProperty('items',function(){return []});
 
 	// Apply cost function
@@ -112,6 +111,16 @@ below.exits = function(grid){
 				exits.push({i:parseInt(i),j:parseInt(j)});
 		}
 	return exits;
+}
+
+/**
+ * Check if a cell is dug
+ * @param {Object} cellvalue
+ * @param {Coord} coord
+ * @returns {Bool}
+ */
+below.isDug = function(cellvalue,coord){
+	return (cellvalue['cost'] || 1) <= 1
 }
 
 /**
@@ -217,6 +226,29 @@ below.sumCostOfRoute = function(grid,route){
 	});
 
 	return _.reduce(costVector,function(a,b){return a+b},0)
+}
+
+
+/**
+ * Check if a specified coordinate in the grid can be accessed
+ * @param {Grid}
+ * @param {Coord}
+ * @returns {Bool}
+ */
+below.isAccessible = function(grid,coord){
+	dugCells = Grid.floodfill(grid).where(below.isDug).commit();
+	return _.any(dugCells, function(c){ return c.i==coord.i && c.j==coord.j })
+}
+
+/**
+ * Check if at least one of the exits are accessible (dug and no obstacles in between)
+ * @param {Grid}
+ * @returns {Bool}
+ */
+below.isExitAccessible = function(grid){
+	// Floodfill and check if the exits are included
+	accessibles = Grid.floodfill(grid).where(below.isDug).commit();
+	return _.any(accessibles, function(c){ return grid[c.i,c.j]['isExit'] === true } )
 }
 
 /**
