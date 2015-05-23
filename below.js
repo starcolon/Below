@@ -204,6 +204,21 @@ below.generateBestRoute = function(grid,startCoord,endCoord,verbose){
 	return route;
 }
 
+
+/**
+ * Sum the total cost it needs to spend moving through the given route
+ * @param {Grid}
+ * @param {Array} array of cell coordinates 
+ * @returns {Float} total cost
+ */
+below.sumCostOfRoute = function(grid,route){
+	var costVector = route.map(function (coord){
+		return grid[parseInt(coord.i)][parseInt(coord.j)].cost || 0
+	});
+
+	return _.reduce(costVector,function(a,b){return a+b},0)
+}
+
 /**
  * MongoDB connectivity
  */
@@ -394,7 +409,9 @@ below.array2d = {
 		return output;
 	},
 
-	shift: below.array2d.offset, // Synnonym for offset
+	/* Synnonym function for `offset`
+	 */
+	shift: function(grid,offset_i,offset_j){ below.array2d.offset(grid,offset_i,offset_j) },
 
 	/**
 	 * Merge multiple grids together
