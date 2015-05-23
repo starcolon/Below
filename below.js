@@ -172,7 +172,7 @@ below.illustrateCost = function(grid,route){
 	}
 
 	function pad(num){
-		if (num<10) return '  '+num.toString();
+		if (num<10) return ' '+num.toString()+' ';
 		else if (num<100) return ' '+num.toString();
 		else if (num<1000) return num.toString();
 		else return '###'
@@ -271,14 +271,26 @@ below.sumCostOfRoute = function(grid,route){
 
 
 /**
+ * Flood fill the grid from the seed coordinate
+ * @param {Grid} grid
+ * @param {Coordinate} from
+ * @returns {Array} list of cells painted by floodfill
+ */
+below.floodfill = function(grid,from){
+	let here = from;
+	function isAccessible(cell){ return cell['cost'] <= 1 }
+	return Grid.floodfill(grid).from(here.i,here.j).where(isAccessible).commit();
+}
+
+/**
  * Check if a specified coordinate in the grid can be accessed
  * @param {Grid}
  * @param {Coord}
  * @returns {Bool}
  */
 below.isAccessible = function(grid,coord){
-	dugCells = Grid.floodfill(grid).where(below.isDug).commit();
-	return _.any(dugCells, function(c){ return c.i==coord.i && c.j==coord.j })
+	let accessibleFromHere = below.floodfill(grid,coord);
+	return _.any(accessibleFromHere, function(c){ return c.i==coord.i && c.j==coord.j })
 }
 
 /**
@@ -286,10 +298,10 @@ below.isAccessible = function(grid,coord){
  * @param {Grid}
  * @returns {Bool}
  */
-below.isExitAccessible = function(grid){
-	// Floodfill and check if the exits are included
-	accessibles = Grid.floodfill(grid).where(below.isDug).commit();
-	return _.any(accessibles, function(c){ return grid[c.i,c.j]['isExit'] === true } )
+below.isExitAccessible = function(grid,from){
+	let accessibleFromHere = below.floodfill(grid,from);
+	below.illustrate(grid,accessibleFromHere);
+	return _.any(accessibleFromHere, function(c){ return grid[c.i][c.j]['isExit'] === true } )
 }
 
 /**

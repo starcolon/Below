@@ -299,6 +299,33 @@ describe('@below test kit',function(){
 
 	})
 
+	describe('intermediate grid operation tests', function(){
+
+		it('should check if exit is accessible', function(){
+			var g = [];
+			var settings = below.settings.create();
+			settings.size = {width: 10, height: 10};
+			settings.entrances = [{i:5,j:0}];
+			settings.exits = [{i:3,j:9},{i:8,j:9}];
+			settings.walls = [];
+
+			g = below.generate(settings);
+			expect(below.isExitAccessible(g,{i:5,j:0})).to.be.true;
+
+			for (var a=0; a<10; a++){
+				settings.walls.push({i:a, j:5});
+			}
+
+			g = below.generate(settings);
+			expect(below.isExitAccessible(g,{i:5,j:0})).to.be.false;
+		})
+
+		it('should check if a certain cell is accessible', function(){
+			// TAOTODO: Write this
+		})
+
+	})
+
 	describe('mongodb interface tests', function(){
 
 		it('should save the grid to the database', function(done){
