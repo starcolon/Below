@@ -131,7 +131,7 @@ below.illustrate = function(grid, route){
 	for (var i in grid)
 		for (var j in grid[i]){
 			let cell = Grid.cell(parseInt(i),parseInt(j)).of(grid);
-			let block = ''
+			let block = '';
 			if (cell['isEntrance'])
 				block = '￬ '.cyan;
 			else if (cell['isExit'])

@@ -335,6 +335,8 @@ describe('@below test kit',function(){
 			});
 		})
 
+		// NOTE: This test cannot be run after the previous mongo tests for some reason
+		// If you want to test this, skip the mongo tests above and run.
 		it.skip('should partially save the database and partially load the portion back', function(done){
 			var isInSavingRegion = function(v,coord){
 				return parseInt(coord.i)<5
