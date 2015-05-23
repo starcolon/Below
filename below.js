@@ -162,6 +162,47 @@ below.illustrate = function(grid, route){
 		console.log(lines[l])
 }
 
+below.illustrateCost = function(grid,route){
+	let lines = [];
+	route = route || [];
+	function isPartOfRoute(coord){
+		return _.any(route, function(r){
+			return r.i==coord.i && r.j==coord.j
+		})
+	}
+
+	function pad(num){
+		if (num<10) return '  '+num.toString();
+		else if (num<100) return ' '+num.toString();
+		else if (num<1000) return num.toString();
+		else return '###'
+	}
+
+	for (var i in grid)
+		for (var j in grid[i]){
+			let cell = Grid.cell(parseInt(i),parseInt(j)).of(grid);
+			let block = '';
+			if (cell['isEntrance'])
+				block = '[ ￬ ]'.cyan;
+			else if (cell['isExit'])
+				block = '[ ￬ ]'.green;
+			else if (cell['cost']>=0xFFFF)
+				block = '[ ☒ ]'.red;
+			else if (isPartOfRoute({i:parseInt(i),j:parseInt(j)}))
+				block = ('['+pad(cell['cost'])+']').green;
+			else
+				block = ('['+pad(cell['cost'])+']');
+
+			if (!(j in lines))
+				lines[j] = ''
+
+			lines[j] += block;
+		}
+
+	for (var l in lines)
+		console.log(lines[l])
+}
+
 
 /**
  * Given a grid with content, generate a simple route from the source cell to the destination
