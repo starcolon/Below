@@ -288,9 +288,9 @@ below.floodfill = function(grid,from){
  * @param {Coord}
  * @returns {Bool}
  */
-below.isAccessible = function(grid,coord){
-	let accessibleFromHere = below.floodfill(grid,coord);
-	return _.any(accessibleFromHere, function(c){ return c.i==coord.i && c.j==coord.j })
+below.isAccessible = function(grid,from,to){
+	let accessibleFromHere = below.floodfill(grid,from);
+	return _.any(accessibleFromHere, function(c){ return c.i==to.i && c.j==to.j })
 }
 
 /**
@@ -300,7 +300,6 @@ below.isAccessible = function(grid,coord){
  */
 below.isExitAccessible = function(grid,from){
 	let accessibleFromHere = below.floodfill(grid,from);
-	below.illustrate(grid,accessibleFromHere);
 	return _.any(accessibleFromHere, function(c){ return grid[c.i][c.j]['isExit'] === true } )
 }
 

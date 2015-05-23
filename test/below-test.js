@@ -321,7 +321,24 @@ describe('@below test kit',function(){
 		})
 
 		it('should check if a certain cell is accessible', function(){
-			// TAOTODO: Write this
+			var g = [];
+			var settings = below.settings.create();
+			settings.size = {width: 10, height: 10};
+			settings.entrances = [{i:5,j:0}];
+			settings.exits = [{i:3,j:9},{i:8,j:9}];
+			settings.walls = [];
+			settings.costFunction = function(c,coord){
+				if (coord.i==0) return 1;
+				else return (coord.j+1)
+			}
+
+			g = below.generate(settings);
+
+			below.illustrateCost(g);
+
+			expect(below.isAccessible(g,{i:0,j:0},{i:0,j:9})).to.be.true;
+			expect(below.isAccessible(g,{i:0,j:0},{i:1,j:9})).to.be.false;
+			expect(below.isAccessible(g,{i:0,j:9},{i:5,j:9})).to.be.false;
 		})
 
 	})
