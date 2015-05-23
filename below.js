@@ -394,6 +394,8 @@ below.array2d = {
 		return output;
 	},
 
+	shift: below.array2d.offset, // Synnonym for offset
+
 	/**
 	 * Merge multiple grids together
 	 * If any of them overlaps, the element from the grid at the lesser index has higher priority

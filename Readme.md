@@ -97,6 +97,11 @@ var grid = Grid.create(50,50,'foo');
 var displaced = below.array2d.offset(grid,20,35);
 ```
 
+Another synonym you may use:
+```javascript
+var displaced = below.array2d.shift(grid,10,25);
+```
+
 ### Merge grids together
 This is a piece of cake. You can just merge any grids together with this expression below:
 ```javascript
