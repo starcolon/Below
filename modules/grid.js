@@ -957,7 +957,7 @@ Grid.cell = function(i,j){
 		 */
 		return function (prop,F){
 			if (self.isNotIn(grid))
-				throw 'Cell is out of bound';
+				throw 'Cell '+ i + ', ' + j +  ' is out of bound';
 			let value = grid[coord.i][coord.j];
 			if (!value.hasOwnProperty(prop)){
 				value[prop] = null;

@@ -556,7 +556,7 @@ below.ui = {
 
 		grid.forEach( function (col, i){
 			grid.forEach( function (cell, j){
-				let c = $('<div>',{css: 'cell'});
+				let c = $('<div>').addClass('cell');
 
 				// Add a new row if it doesn't exist
 				if ($('#row'+j).length==0)

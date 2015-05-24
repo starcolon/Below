@@ -39,6 +39,8 @@ function generate(){
 	// Create a new grid
 	grid = below.generate(parameters);
 
+	console.log(grid);
+
 	// Render the grid 
 	below.ui.render(grid,$('#grid-container'));
 }
