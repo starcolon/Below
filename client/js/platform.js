@@ -45,5 +45,19 @@ function generate(){
 	below.ui.render(grid,$('#grid-container'),[],true);
 }
 
+function findRoute(){
+	let sourceAndDest = $('#param-route').val().split('->').map(function (s){
+		let units = s.replace('(','').replace(')').split(':');
+		return { i: parseInt(units[0]), j: parseInt(units[1]) }
+	});
+	console.log(sourceAndDest);
+	let from = sourceAndDest[0];
+	let to = sourceAndDest[1];
+	var route = below.generateBestRoute(grid,from,to);
+
+	// Render
+	below.ui.render(grid, $('#grid-container'), route, true );
+}
+
 
 

@@ -549,10 +549,10 @@ below.ui = {
 	 * @param {Array} routes
 	 * @param {bool} colorByCost
 	 */
-	render: function(grid, container, routes, colorByCost){
+	render: function(grid, container, route, colorByCost){
 		if ($(container).length == 0)
 			throw 'No container inspected';
-		routes = routes || [];
+		route = route || [];
 		colorByCost = colorByCost || false;
 
 		$(container).empty();
@@ -581,8 +581,11 @@ below.ui = {
 				else content = '&nbsp;'
 				let c = $('<div>').addClass('cell').html(content);
 
-				// Color by cost?
-				if (colorByCost===true){
+				// Is it a part of the given route ?
+				if (_.any(route, function(r){ return r.i==i && r.j==j })){
+					$(c).css('background-color','#20FF70');
+				}
+				else if (colorByCost===true){ // Otherwise, color by cost ?
 					let cost = cell.cost || 0;
 					cost = cost == 0xFFFF ? maxCost : cost;
 					let degree =  parseInt( 255 * (1 - cost / (maxCost - minCost)));
