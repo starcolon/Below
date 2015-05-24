@@ -8,12 +8,10 @@
 
 "use strict";
 
-
 // Dependencies
-var _ = require('underscore');
-var promise = require('promise');
-var Grid = require('./modules/grid.js').Grid;
-
+if (typeof(_)=='undefined') var _ = require('underscore');
+if (typeof(Promise)=='undefined') var Promise = require('promise');
+if (typeof(Grid)=='undefined') var Grid = require('./modules/grid.js').Grid;
 
 
 // Module definitions
@@ -311,7 +309,7 @@ below.isExitAccessible = function(grid,from){
 below.mongo = {
 
 	// DESIGN NOTE: 
-	// 	All functions of {below.mongdo} return promises.
+	// 	All functions of {below.mongdo} return Promises.
 	//	This is specifically a design pattern for asynchronous use.
 
 
@@ -326,7 +324,7 @@ below.mongo = {
 		// Initialize the required modules
 		let pp = { db: undefined, collection: collection };
 
-		return new promise(function(fullfill,reject){
+		return new Promise(function(fullfill,reject){
 			// Try initializing the database connection
 			try {
 				server = server || 'mongodb://localhost';
@@ -380,7 +378,7 @@ below.mongo = {
 
 			// Serialize the data		
 			let numSaved = 0;
-			return new promise(function(done,err){
+			return new Promise(function(done,err){
 				(function saveToDB(){
 					if (recordBag.length==0){
 						// All done!
@@ -425,7 +423,7 @@ below.mongo = {
 		return function(pp){
 			let grid = [];
 			// Load the record from the db
-			return new promise(function(done,reject){
+			return new Promise(function(done,reject){
 				pp.db.collection(pp.collection).find(scope).toArray(function(err,records){
 					if (err){
 						console.err(err.toString().red);

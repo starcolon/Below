@@ -3,6 +3,8 @@
 		<title>*: below sample use</title>
 		<script src="http://requirejs.org/docs/release/2.1.17/minified/require.js" name="require-js"></script>
 		<script src="http://underscorejs.org/underscore-min.js" name="underscore-js"></script>
+		<script src="../modules/promise-7.0.1.min.js" name="promise-js"></script>
+		<script src="../modules/grid.js" name="grid-module"></script>
 		<script src="../below.js" name="below-module"></script>
 		<script src="./js/platform.js" name="platform-renderer"></script>
 		<script src="http://code.jquery.com/jquery-2.1.4.min.js" name="jquery-cdn"></script>
@@ -19,7 +21,6 @@
 					<li>Entrances : <input id="param-entrances" type="text" value="(3:5)"/> Exits : <input id="param-exits" type="text" value="(8:5)"/></li>
 					<li>Walls : <input id="param-walls" type="text" value="(0:3)(5:3)(6:3)" /></li>
 					<li>Cost function : <input id="param-cost" type="text" value=""/></li>
-					<li></li>
 				</ul>
 				<button onclick="generate()">Generate</button>
 				<button onclick="findRoute()">Find a route</button>

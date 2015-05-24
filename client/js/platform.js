@@ -2,21 +2,23 @@
 
 function takeParameters(){
 	function takeAndSplitCoords(value){
-		value = value.replace(')',''); // remove the closing braces because we don't need em
-		pairs = value.split('(').filter(function(w){ // split by opening braces we get an array of tuples straightaway
+		let altered = value.replace(')',''); // remove the closing braces because we don't need em
+		let pairs = altered.split('(').filter(function(w){ // split by opening braces we get an array of tuples straightaway
 			return w.trim().length > 0
 		});
 		return pairs.map(function (pair){
-			components = pair.split(':').map(function(m){ return parseInt(m)});
+			let components = pair.split(':').map(function(m){ return parseInt(m)});
 			return { i: components[0], j: components[1] }
 		})
 	}
-	var gridsize = $('#param-size').val().trim('x').map(function(token){ return parseInt(token)});
+	// Take parameters as given from the users
+	var gridsize = $('#param-size').val().split('x').map(function(token){ return parseInt(token)});
 	var entrances = takeAndSplitCoords( $('#param-entrances').val() );
 	var exits = takeAndSplitCoords( $('#param-exits').val() );
 	var walls =  takeAndSplitCoords( $('#param-walls').val() );
 	var cost = $('#param-cost').val();
 
+	// Encapsulate given parameters 
 	var params = below.settings.create();
 	params.size = { width: gridsize[0], height: gridsize[1] };
 	params.entrances = entrances;
@@ -28,7 +30,11 @@ function takeParameters(){
 }
 
 function generate(){
+	// Take the grid paramters from the users
 	let parameters = takeParameters();
+
+	// TAOTODO: Create a grid accordingly
+
 
 	console.log(parameters);
 }
