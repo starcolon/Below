@@ -54,6 +54,8 @@ div
 	height:32px;
 	border:1px solid #ACACC9;
 	text-align: center;
+	font-size:10pt;
+	color:#A0A0BB;
 }
 
 .cell:hover

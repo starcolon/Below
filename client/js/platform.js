@@ -39,7 +39,7 @@ function generate(){
 	// Create a new grid
 	grid = below.generate(parameters);
 
-	console.log(grid);
+	console.log(JSON.stringify(grid));
 
 	// Render the grid 
 	below.ui.render(grid,$('#grid-container'));

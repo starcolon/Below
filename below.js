@@ -555,8 +555,12 @@ below.ui = {
 		$('<div>',{id: 'grid'}).appendTo(container);
 
 		grid.forEach( function (col, i){
-			grid.forEach( function (cell, j){
-				let c = $('<div>').addClass('cell');
+			col.forEach( function (cell, j){
+				let content = '';
+				if (cell.isEntrance===true) {content = 'IN'; console.log('in = ' + i + ', ' + j) }
+				else if (cell.isExit===true) content = 'OUT';
+				else content = '&nbsp;'
+				let c = $('<div>').addClass('cell').html(content);
 
 				// Add a new row if it doesn't exist
 				if ($('#row'+j).length==0)
