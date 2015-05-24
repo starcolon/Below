@@ -611,8 +611,8 @@ below.ui = {
 		$('.row').each(function (rowId){
 			$(this).width(numCols * cellWidth);
 		});
-		$('#grid').width(numRows * cellWidth);
-		$('#grid').height(numCols * cellHeight);
+		$('#grid').width(numCols * cellWidth);
+		$('#grid').height(numRows * cellHeight);
 	}
 }
 
