@@ -537,6 +537,38 @@ below.array2d = {
 	}
 }
 
+/**
+ * UI sub-library for below rendering and UI stuffs
+ */
+below.ui = {
+	/**
+	 * below.ui.render(grid, container)
+	 * Renders a grid in the container object (DOM)
+	 * @param {Grid}
+	 * @param {DOM}
+	 */
+	render: function(grid, container){
+		if ($(container).length == 0)
+			throw 'No container inspected';
+
+		$(container).empty();
+		$('<div>',{id: 'grid'}).appendTo(container);
+
+		grid.forEach( function (col, i){
+			grid.forEach( function (cell, j){
+				let c = $('<div>',{css: 'cell'});
+
+				// Add a new row if it doesn't exist
+				if ($('#row'+j).length==0)
+					$('<div>',{id: 'row'+j}).addClass('row').appendTo('#grid');
+
+				// Add a new cell to the row
+				$(c).appendTo($('#row'+j));
+			});
+		});
+	}
+}
+
 
 if (typeof(module)!='undefined'){
 	module.exports = below;

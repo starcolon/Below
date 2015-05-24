@@ -38,6 +38,22 @@ div
 	border:1px solid ;
 }
 
+.row
+{
+	display:block;
+	width: auto;
+	height:auto;
+}
+
+.cell
+{
+	display: inline-block;
+	width:64px;
+	height:64px;
+	border:1px solid #7C7C89;
+	text-align: center;
+}
+
 #grid-input > div
 {
 	width:80%;

@@ -1,5 +1,7 @@
 "use strict" // Here we go strict mode *w*
 
+var grid = [];
+
 function takeParameters(){
 	function takeAndSplitCoords(value){
 		let altered = value.replace(')',''); // remove the closing braces because we don't need em
@@ -32,13 +34,14 @@ function takeParameters(){
 function generate(){
 	// Take the grid paramters from the users
 	let parameters = takeParameters();
+	console.log(JSON.stringify(parameters));
 
-	// TAOTODO: Create a grid accordingly
+	// Create a new grid
+	grid = below.generate(parameters);
 
-
-	console.log(parameters);
+	// Render the grid 
+	below.ui.render(grid,$('#grid-container'));
 }
 
-console.log(below); // TAOTODO: Ouch! it is undefined ....
 
 
