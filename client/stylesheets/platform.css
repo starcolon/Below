@@ -1,0 +1,53 @@
+body
+{
+	width:100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	font-size: 12pt;
+	font-family: 'core sans 35 a light','sans-serif';
+	overflow: hidden;
+}
+
+div
+{
+	display: block;
+}
+
+#grid-container
+{
+	width:100%;
+	height:80%;
+	min-height:500px;
+	background-color: #F0F0FA;
+	border-bottom: 1px solid #88889C;
+	box-shadow:inset 0 -2px 5px rgba(60,60,60,0.37);
+}
+
+#grid-input
+{
+	width:100%;
+	top:0;
+	bottom:0;
+	margin:0;
+}
+
+#grid, .grid
+{
+	margin:20px 20px;
+	border:1px solid ;
+}
+
+#grid-input > div
+{
+	width:80%;
+	height:85%;
+	min-height: 250px;
+	max-height: 500px;
+	max-width: 700px;
+	min-width: 420px;
+	margin:16px auto;
+	border-left:1px dashed #C6C6C6;
+	border-right: 1px dashed #C6C6C6;
+}
+
