@@ -18,7 +18,7 @@ function takeParameters(){
 	var entrances = takeAndSplitCoords( $('#param-entrances').val() );
 	var exits = takeAndSplitCoords( $('#param-exits').val() );
 	var walls =  takeAndSplitCoords( $('#param-walls').val() );
-	var cost = $('#param-cost').val();
+	var cost = $('#param-cost').val() || '1+coord.j*2';
 
 	// Encapsulate given parameters 
 	var params = below.settings.create();
@@ -26,7 +26,7 @@ function takeParameters(){
 	params.entrances = entrances;
 	params.exits = exits;
 	params.walls = walls;
-	params.costFunction = function(cell, coord){ return 1+coord.j*2 };
+	params.costFunction = function(cell, coord){ return eval(cost) };
 
 	return params;
 }
