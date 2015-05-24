@@ -303,6 +303,7 @@ below.isExitAccessible = function(grid,from){
 	return _.any(accessibleFromHere, function(c){ return grid[c.i][c.j]['isExit'] === true } )
 }
 
+
 /**
  * MongoDB connectivity
  */
