@@ -554,6 +554,9 @@ below.ui = {
 		$(container).empty();
 		$('<div>',{id: 'grid'}).appendTo(container);
 
+		let numRows = 0;
+		let numCols = 0;
+
 		grid.forEach( function (col, i){
 			col.forEach( function (cell, j){
 				let content = '';
@@ -568,8 +571,21 @@ below.ui = {
 
 				// Add a new cell to the row
 				$(c).appendTo($('#row'+j));
+
+				numRows = (j+1>numRows) ? j+1 : numRows;
+				numCols = (i+1>numCols) ? i+1 : numCols;
 			});
 		});
+
+		let cellWidth = $('.cell').first().width()+2;
+		let cellHeight = $('.cell').first().height()+2;
+		
+		// Wrap up the grid after render
+		$('.row').each(function (rowId){
+			$(this).width(numCols * cellWidth);
+		});
+		$('#grid').width(numRows * cellWidth);
+		$('#grid').height(numCols * cellHeight);
 	}
 }
 
