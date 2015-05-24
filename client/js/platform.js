@@ -26,7 +26,7 @@ function takeParameters(){
 	params.entrances = entrances;
 	params.exits = exits;
 	params.walls = walls;
-	params.costFunction = function(cell, coord){ return 1 };
+	params.costFunction = function(cell, coord){ return 1+coord.j*2 };
 
 	return params;
 }
@@ -42,7 +42,7 @@ function generate(){
 	console.log(JSON.stringify(grid));
 
 	// Render the grid 
-	below.ui.render(grid,$('#grid-container'));
+	below.ui.render(grid,$('#grid-container'),[],true);
 }
 
 

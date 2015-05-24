@@ -546,16 +546,32 @@ below.ui = {
 	 * Renders a grid in the container object (DOM)
 	 * @param {Grid}
 	 * @param {DOM}
+	 * @param {Array} routes
+	 * @param {bool} colorByCost
 	 */
-	render: function(grid, container){
+	render: function(grid, container, routes, colorByCost){
 		if ($(container).length == 0)
 			throw 'No container inspected';
+		routes = routes || [];
+		colorByCost = colorByCost || false;
 
 		$(container).empty();
 		$('<div>',{id: 'grid'}).appendTo(container);
 
 		let numRows = 0;
 		let numCols = 0;
+
+		// If color by cost, find the range of costs in the matrix
+		if (colorByCost){
+			var minCost = 0;
+			var maxCost = 0;
+			grid.forEach( function(col){
+				col.forEach( function(cell){
+					minCost = minCost > cell.cost ? cell.cost : minCost;
+					maxCost = maxCost < cell.cost && cell.cost < 0xFFFF ? cell.cost : maxCost;
+				})
+			})
+		}
 
 		grid.forEach( function (col, i){
 			col.forEach( function (cell, j){
@@ -564,6 +580,17 @@ below.ui = {
 				else if (cell.isExit===true) content = 'OUT';
 				else content = '&nbsp;'
 				let c = $('<div>').addClass('cell').html(content);
+
+				// Color by cost?
+				if (colorByCost===true){
+					let cost = cell.cost || 0;
+					cost = cost == 0xFFFF ? maxCost : cost;
+					let degree =  parseInt( 255 * (1 - cost / (maxCost - minCost)));
+					if (cell.cost==0xFFFF)
+						$(c).css('background-color','black');
+					else
+						$(c).css('background-color', 'rgb(255,' + degree + ','+ degree + ')');
+				}
 
 				// Add a new row if it doesn't exist
 				if ($('#row'+j).length==0)
