@@ -1,13 +1,28 @@
 <html>
 	<head>
-		<script src="../below.js"></script>
+		<title>*: below sample use</title>
+		<script src="http://requirejs.org/docs/release/2.1.17/minified/require.js" name="require-js"></script>
+		<script src="http://underscorejs.org/underscore-min.js" name="underscore-js"></script>
+		<script src="../below.js" name="below-module"></script>
+		<script src="./js/platform.js" name="platform-renderer"></script>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js" name="jquery-cdn"></script>
 		<link rel="stylesheet" href="./stylesheets/platform.css"></link>
 	</head>
 	<body>
 		<div id="grid-container">
+			<!-- GRID TO BE RENDERED INSIDE THIS BOX -->
 		</div>
 		<div id="grid-input">
 			<div data-role="console-panel">
+				<ul>
+					<li>Grid size: <input id="param-size" type="text" value="5 x 5"/></li>
+					<li>Entrances : <input id="param-entrances" type="text" value="(3:5)"/> Exits : <input id="param-exits" type="text" value="(8:5)"/></li>
+					<li>Walls : <input id="param-walls" type="text" value="(0:3)(5:3)(6:3)" /></li>
+					<li>Cost function : <input id="param-cost" type="text" value=""/></li>
+					<li></li>
+				</ul>
+				<button onclick="generate()">Generate</button>
+				<button onclick="findRoute()">Find a route</button>
 			</div>
 		</div>
 	</body>
