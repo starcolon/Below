@@ -1,6 +1,6 @@
 {
   "name": "below",
-  "description": "Library for spatial simulation app",
+  "description": "Lightweight JavaScript library for 2D spatial grid computation, illustration, and analysis",
   "author": "StarColon Projects",
   "email": "tao@starcolon.com",
   "url": "http://starcolon.com/",
