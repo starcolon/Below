@@ -121,5 +121,17 @@ button
 	background-color:#F2F2FF;
 }
 
+.github-float-panel
+{
+	position:fixed;
+	float:right;
+	margin-right:35px;
+	margin-top:0;
+	top:66px;
+	bottom:0;
+	right:0;
+	font-size:15pt;
+	color: #808080;
+}
 
 
