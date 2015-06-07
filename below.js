@@ -340,7 +340,6 @@ below.mongo = {
 					reject('failed to connect to the database');
 				}
 				else{
-					// TAOTODO: check if the collection we're looking for exists in the database
 					function logSaved(n){ console.log( n + ' records saved.') }
 					fullfill(pp);
 				}
