@@ -34,15 +34,23 @@
 			</div>
 		</div>
 		<div class="github-float-panel">
-			<!-- Place this tag where you want the button to render. -->
-			<a class="github-button" href="https://github.com/starcolon/Below/fork" data-icon="octicon-git-branch" data-style="mega" aria-label="Fork starcolon/Below on GitHub">Fork</a>
-			<!-- Place this tag where you want the button to render. -->
-			<a class="github-button" href="https://github.com/starcolon/Below/archive/master.zip" data-icon="octicon-cloud-download" data-style="mega" aria-label="Download starcolon/Below on GitHub">Download</a>
-			<!-- Place this tag where you want the button to render. -->
-			<a class="github-button" href="https://github.com/starcolon" data-style="mega" aria-label="Follow @starcolon on GitHub">Follow @starcolon</a>
-
-			<!-- Place this tag right after the last button or just before your close body tag. -->
-			<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+			Mongo DB:
+			<ul>
+				<li>
+					<span style="font-size:10pt">Server:</span>
+					<input id="server" type="text" value="mongodb://localhost"/>
+				</li>
+				<li>
+					<span style="font-size:10pt">Database</span>
+					<input id="db" type="text" value="test">
+				</li>
+				<li>
+					<span style="font-size:10pt">Collection</span>
+					<input id="collection" type="text" value="grid"/>
+				</li>
+				<button onclick="saveGrid()">Save</button>
+				<button onclick="loadGrid()">Load</button>
+			</ul>
 		</div>
 	</body>
 </html>
@@ -79,6 +87,25 @@
 		generate(onCellClick);
 	}
 	
+	function loadGrid(){
+		var server = $('#server').val(); 
+		var db = $('#db').val();
+		var collection = $('#collection').val();
+		below.mongo.init(server,db,collection).then(below.mongo.load()).done(function(grid){
+			console.log(grid);
+			// TAOTODO:
+			// Render the grid on screen
+
+			// Extract the parameters and display on the console
+
+
+		});
+	}
+
+	function saveGrid(){
+		// TAOTODO:
+	}
+
 	$(document).ready(function done(){
 		generate(onCellClick);
 	});
