@@ -22,6 +22,7 @@ div
 	background-color: #F0F0FA;
 	border-bottom: 1px solid #88889C;
 	box-shadow:inset 0 -2px 5px rgba(60,60,60,0.37);
+	overflow: auto;
 }
 
 #grid-input
