@@ -1,0 +1,85 @@
+<html>
+	<head>
+		<title>Grid maker tool</title>
+		<script src="http://requirejs.org/docs/release/2.1.17/minified/require.js" name="require-js"></script>
+		<script src="http://underscorejs.org/underscore-min.js" name="underscore-js"></script>
+		<script src="../modules/promise-7.0.1.min.js" name="promise-js"></script>
+		<script src="../modules/grid.js" name="grid-module"></script>
+		<script src="../below.js" name="below-module"></script>
+		<script src="../client/js/platform.js" name="platform-renderer"></script>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js" name="jquery-cdn"></script>
+		<link rel="stylesheet" href="../client/stylesheets/platform.css"></link>
+		<meta property="og:title" content="@below.js - grid maker tool">
+		<meta property="og:type" content="non_profit">
+		<meta property="og:url" content="http://starcolon.github.io/Below/">
+		<meta property="og:image" content="http://starcolon.com/img/artwork/below.png">
+	</head>
+	<body>
+		<div id="grid-container">
+			<!-- GRID TO BE RENDERED INSIDE THIS BOX -->
+		</div>
+		<div id="grid-input">
+			<div data-role="console-panel">
+				<ul>
+					<li>Grid size: <input id="param-size" type="text" value="17 x 12"/></li>
+					<li>Entrances : <input id="param-entrances" type="text" value="(0:11)"/> Exits : <input id="param-exits" type="text" value="(16:4)"/></li>
+					<li>Walls : <input id="param-walls" type="text" style="width:250px" value="(1:4)(1:5)(1:6)(1:7)(1:8)(2:8)(3:8)(4:8)(5:8)(6:8)(7:8)(7:9)(7:10)(7:11)(9:6)(10:6)(11:6)(12:5)(13:4)(14:3)(15:2)(15:1)" /></li>
+					<li>Cost function : <input id="param-cost" type="text" value="1+Math.pow(coord.j,1.5) + coord.i%5" style="width:250px"/></li>
+					<li>Route from -> To :<input id="param-route" type="text" value="(0:11)->(16:4)"/></li>
+				</ul>
+				<ul data-role="submit-container">
+					<li><button onclick="generate(onCellClick)">Generate</button></li>
+					<li><button onclick="findRoute(onCellClick)">Find a route</button></li>
+				</ul>
+			</div>
+		</div>
+		<div class="github-float-panel">
+			<!-- Place this tag where you want the button to render. -->
+			<a class="github-button" href="https://github.com/starcolon/Below/fork" data-icon="octicon-git-branch" data-style="mega" aria-label="Fork starcolon/Below on GitHub">Fork</a>
+			<!-- Place this tag where you want the button to render. -->
+			<a class="github-button" href="https://github.com/starcolon/Below/archive/master.zip" data-icon="octicon-cloud-download" data-style="mega" aria-label="Download starcolon/Below on GitHub">Download</a>
+			<!-- Place this tag where you want the button to render. -->
+			<a class="github-button" href="https://github.com/starcolon" data-style="mega" aria-label="Follow @starcolon on GitHub">Follow @starcolon</a>
+
+			<!-- Place this tag right after the last button or just before your close body tag. -->
+			<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	function onCellClick(cell){
+		var coord =  {i:parseInt($(cell).attr('data-i')), j:parseInt($(cell).attr('data-j'))};
+		console.log('cell #('+coord.i+','+coord.j+') clicked');
+
+		// Toggle the cell between wall and primitive cell
+		toggleWall(coord);
+	}
+
+	function toggleWall(coord){
+		var walls = takeAndSplitCoords( $('#param-walls').val());
+		// Check if the coordinate is already included in the textbox
+		console.log(walls);
+		function isCoord(w) { return w.i==coord.i && w.j==coord.j};
+		if (_.any(walls,isCoord)){
+			// Remove it from the list
+			walls = _.reject(walls,isCoord);
+			$('#param-walls').val(
+				walls.map(function(w){
+					return '('+w.i+':'+w.j+')'
+				}).join('')
+			);
+		}
+		else{
+			// Add it the list
+			var val0 = $('#param-walls').val();
+			$('#param-walls').val(val0 + '(' + coord.i + ':' + coord.j + ')');
+		}
+
+		// Re-generate the entire grid
+		generate(onCellClick);
+	}
+	
+	$(document).ready(function done(){
+		generate(onCellClick);
+	});
+</script>

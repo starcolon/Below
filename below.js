@@ -426,7 +426,7 @@ below.mongo = {
 				pp.db.collection(pp.collection).find(scope).toArray(function(err,records){
 					if (err){
 						console.err(err.toString().red);
-						return reject();
+						return reject(null);
 					}
 					// Fill the record in the destination grid
 					let nLoaded = 0;
@@ -578,8 +578,12 @@ below.ui = {
 				if (cell.isEntrance===true) {content = 'IN'; console.log('in = ' + i + ', ' + j) }
 				else if (cell.isExit===true) content = 'OUT';
 				else content = '&nbsp;'
-				let c = $('<div>').addClass('cell').html(content);
-
+				let c = $('<div>')
+					.attr('data-i',i)
+					.attr('data-j',j)
+					.addClass('cell')
+					.html(content);
+				
 				// Is it a part of the given route ?
 				if (_.any(route, function(r){ return r.i==i && r.j==j })){
 					$(c).css('background-color','#20FF70');

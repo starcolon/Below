@@ -2,17 +2,18 @@
 
 var grid = [];
 
+function takeAndSplitCoords(value){
+	let altered = value.replace(')',''); // remove the closing braces because we don't need em
+	let pairs = altered.split('(').filter(function(w){ // split by opening braces we get an array of tuples straightaway
+		return w.trim().length > 0
+	});
+	return pairs.map(function (pair){
+		let components = pair.split(':').map(function(m){ return parseInt(m)});
+		return { i: components[0], j: components[1] }
+	})
+}
+
 function takeParameters(){
-	function takeAndSplitCoords(value){
-		let altered = value.replace(')',''); // remove the closing braces because we don't need em
-		let pairs = altered.split('(').filter(function(w){ // split by opening braces we get an array of tuples straightaway
-			return w.trim().length > 0
-		});
-		return pairs.map(function (pair){
-			let components = pair.split(':').map(function(m){ return parseInt(m)});
-			return { i: components[0], j: components[1] }
-		})
-	}
 	// Take parameters as given from the users
 	var gridsize = $('#param-size').val().split('x').map(function(token){ return parseInt(token)});
 	var entrances = takeAndSplitCoords( $('#param-entrances').val() );
@@ -31,21 +32,26 @@ function takeParameters(){
 	return params;
 }
 
-function generate(){
+function generate(onclick){
 	// Take the grid paramters from the users
 	let parameters = takeParameters();
-	console.log(JSON.stringify(parameters));
-
 	// Create a new grid
 	grid = below.generate(parameters);
 
-	console.log(JSON.stringify(grid));
-
 	// Render the grid 
 	below.ui.render(grid,$('#grid-container'),[],true);
+
+	// Bind the cell with onclick event (if supplied)
+	if (typeof(onclick) != 'undefined'){
+		$('.cell').each(function(i,cell){
+			$(cell).click(function (evt){
+				onclick(evt.target);
+			})
+		});
+	}
 }
 
-function findRoute(){
+function findRoute(onclick){
 	let sourceAndDest = $('#param-route').val().split('->').map(function (s){
 		let units = s.replace('(','').replace(')').split(':');
 		return { i: parseInt(units[0]), j: parseInt(units[1]) }
@@ -57,6 +63,15 @@ function findRoute(){
 
 	// Render
 	below.ui.render(grid, $('#grid-container'), route, true );
+
+	// Bind the cell with onclick event (if supplied)
+	if (typeof(onclick) != 'undefined'){
+		$('.cell').each(function(i,cell){
+			$(cell).click(function (evt){
+				onclick(evt.target);
+			})
+		});
+	}
 }
 
 
