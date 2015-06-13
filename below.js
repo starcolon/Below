@@ -452,6 +452,18 @@ below.mongo = {
 below.array2d = {
 
 	/**
+	 * below.array2d.size(grid)
+	 * Get the size (width x height) of the given grid
+	 * @param {Grid}
+	 * @returns {Array}, the first element is width, the second is height
+	 */
+	size: function(grid){
+		let w = Object.keys(grid).length;
+		let h = Object.keys(grid[Object.keys(grid)[0]]).length;
+		return [w,h];
+	},
+
+	/**
 	 * below.array2d.map(grid,mapper)
 	 * Map a grid to another grid using mapper function
 	 * @param {Grid}

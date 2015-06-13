@@ -141,4 +141,31 @@ button
 	margin-top:5px;
 }
 
+#popup
+{
+	position: fixed;
+	z-index: 9;
+	width: 620px;
+	height:450px;
+	border:1px solid #888888;
+	box-shadow:0 1px 3px black;
+	background-color:white;
+	margin:auto auto;
+	left:0;
+	right:0;
+	top:0;
+	bottom:0;
+}
+
+#popup textarea
+{
+	margin:10px 10px;
+	border:1px solid #888888;
+	padding:10px 10px;
+	overflow-x:none;
+	overflow-y:auto;
+	width:96%;
+	left:0;
+	right:0;
+}
 

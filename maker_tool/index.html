@@ -34,6 +34,12 @@
 			</div>
 		</div>
 		<div class="github-float-panel">
+			Import &amp; Export
+			<button onclick="exportGrid()">Export to JSON</button>
+			<button onclick="importGrid()">Import from JSON</button>
+		</div>
+		<!--
+		<div class="github-float-panel">
 			Mongo DB:
 			<ul>
 				<li>
@@ -52,6 +58,7 @@
 				<button onclick="loadGrid()">Load</button>
 			</ul>
 		</div>
+		-->
 	</body>
 </html>
 <script type="text/javascript">
@@ -61,6 +68,41 @@
 
 		// Toggle the cell between wall and primitive cell
 		toggleWall(coord);
+	}
+
+	function importGrid(){
+		// Display a popup to wait for the user input
+	}
+
+	function exportGrid(){
+		// Display a popup
+		// TAOTODO:
+		var grid = generate();
+		console.log(grid);
+		displayPopup(JSON.stringify(grid));
+	}
+
+	function displayPopup(data,okay){
+		data = data || '';
+		wrappedOkay = function(){
+			// Hide the popup by default
+			$('#popup').remove();
+			if (typeof(okay)=='function') okay();
+		}
+
+		var popup = $('<div>',{'id': 'popup'});
+		$(popup).append($('<textarea>',{'id': 'json','rows': 26}).val(data));
+		var divButton = $('<div>').css({
+			'width':'100%',
+			'align':'center'
+		});
+		$(divButton).append($('<button>').css({
+			'left': 0,
+			'right': 0,
+			'margin': 'auto'
+		}).html('OK').click(wrappedOkay));
+		$(popup).append(divButton);
+		$('body').append(popup);
 	}
 
 	function toggleWall(coord){
@@ -85,25 +127,6 @@
 
 		// Re-generate the entire grid
 		generate(onCellClick);
-	}
-	
-	function loadGrid(){
-		var server = $('#server').val(); 
-		var db = $('#db').val();
-		var collection = $('#collection').val();
-		below.mongo.init(server,db,collection).then(below.mongo.load()).done(function(grid){
-			console.log(grid);
-			// TAOTODO:
-			// Render the grid on screen
-
-			// Extract the parameters and display on the console
-
-
-		});
-	}
-
-	function saveGrid(){
-		// TAOTODO:
 	}
 
 	$(document).ready(function done(){

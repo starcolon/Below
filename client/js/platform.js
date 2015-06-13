@@ -49,6 +49,8 @@ function generate(onclick){
 			})
 		});
 	}
+
+	return grid;
 }
 
 function findRoute(onclick){
@@ -72,6 +74,23 @@ function findRoute(onclick){
 			})
 		});
 	}
+}
+
+function renderFromGrid(grid){
+	if (typeof(grid)=='undefined' || grid==null)
+		return false;
+
+	// Clear old parameters
+	$('#param-size').val('');
+	$('#param-entrances').val('');
+	$('#param-exits').val('');
+	$('param-walls').val('');
+	$('param-cost').val('');
+
+	// Extract parameter from the given grid
+	var size = below.array2d.size(grid);
+
+	alert(size);
 }
 
 
