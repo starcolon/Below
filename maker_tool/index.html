@@ -37,6 +37,7 @@
 			Import &amp; Export
 			<button onclick="exportGrid()">Export to JSON</button>
 			<button onclick="importGrid()">Import from JSON</button>
+			<button onclick="saveToDB()">Save to MongoDB</button>
 		</div>
 		<!--
 		<div class="github-float-panel">
@@ -141,6 +142,25 @@
 		// Re-generate the entire grid
 		generate(onCellClick);
 	}
+
+	function saveToDB(){
+		var id = $('#id').val() || 32225;
+
+		var grid = generateWithoutRender();
+		if (grid==null){
+			alert('Ouch! There is no grid to save.');
+			return false;
+		}
+
+		// TAOTODO: Save the grid to the database
+
+		// Make a connection to DB
+
+		// Save !
+
+		
+	}
+
 
 	$(document).ready(function done(){
 		generate(onCellClick);
