@@ -24,7 +24,7 @@
 					<li>Grid size: <input id="param-size" type="text" value="17 x 12"/></li>
 					<li>Entrances : <input id="param-entrances" type="text" value="(0:11)"/> Exits : <input id="param-exits" type="text" value="(16:4)"/></li>
 					<li>Walls : <input id="param-walls" type="text" style="width:250px" value="(1:4)(1:5)(1:6)(1:7)(1:8)(2:8)(3:8)(4:8)(5:8)(6:8)(7:8)(7:9)(7:10)(7:11)(9:6)(10:6)(11:6)(12:5)(13:4)(14:3)(15:2)(15:1)" /></li>
-					<li>Cost function : <input id="param-cost" type="text" value="1+Math.pow(coord.j,1.5) + coord.i%5" style="width:250px"/></li>
+					<li>Cost function : <input id="param-cost" type="text" value="1+Math.max(coord.i*2,coord.j*2)" style="width:250px"/></li>
 					<li>Route from -> To :<input id="param-route" type="text" value="(0:11)->(16:4)"/></li>
 				</ul>
 				<ul data-role="submit-container">

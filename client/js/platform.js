@@ -113,20 +113,16 @@ function renderFromGrid(grid,onclick){
 		});
 	});
 
-	// DEBUG:
-	console.log(size);
-	console.log(entrances);
-	console.log(exits);
 
 	// Populate the input fields
 	function mapToPair(u){
 		return '('+u.i+':'+u.j+')'
 	}
-	console.log('mapping size'); // DEBUG:
+	console.log('mapping size...'); // DEBUG:
 	$('#param-size').val(size.join(' x '));
-	console.log('mapping entrances'); // DEBUG:
+	console.log('mapping entrances...'); // DEBUG:
 	$('#param-entrances').val(entrances.map(mapToPair).join(''));
-	console.log('mapping exits'); // DEBUG:
+	console.log('mapping exits...'); // DEBUG:
 	$('#param-exits').val(exits.map(mapToPair).join(''));
 	$('#param-walls').val(walls.map(mapToPair).join(''));
 
