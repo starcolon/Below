@@ -69,7 +69,8 @@ ul[data-role="submit-container"]
 	display: inline-block;
 	width:32px;
 	height:32px;
-	border:1px solid #ACACC9;
+	border-right:1px solid #ACACC9;
+	border-bottom:1px solid #ACACC9;
 	text-align: center;
 	font-size:10pt;
 	color:#A0A0BB;

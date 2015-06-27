@@ -53,6 +53,14 @@ function generate(onclick){
 	return grid;
 }
 
+function generateWithoutRender(){
+	// Take the grid paramters from the users
+	let parameters = takeParameters();
+	// Create a new grid
+	grid = below.generate(parameters);
+	return grid;
+}
+
 function findRoute(onclick){
 	let sourceAndDest = $('#param-route').val().split('->').map(function (s){
 		let units = s.replace('(','').replace(')').split(':');
@@ -89,8 +97,37 @@ function renderFromGrid(grid){
 
 	// Extract parameter from the given grid
 	var size = below.array2d.size(grid);
+	var entrances = [];
+	var exits = [];
+	var walls = [];
+	grid.forEach(function(col,i){
+		col.forEach(function(cell,j){
+			// Check the cell status
+			if (cell['isEntrance']===true)
+				entrances.push({i:i,j:j});
+			else if (cell['isExit']===true)
+				exits.push({i:i,j:j});
+			if (cell['cost']===0xFFFF)
+				walls.push({i:i,j:j});
+		});
+	});
 
-	alert(size);
+	// DEBUG:
+	console.log(size);
+	console.log(entrances);
+	console.log(exits);
+
+	// Populate the input fields
+	function mapToPair(u){
+		return '('+u.i+':'+u.j+')'
+	}
+	console.log('mapping size'); // DEBUG:
+	$('#param-size').val(size.join(' x '));
+	console.log('mapping entrances'); // DEBUG:
+	$('#param-entrances').val(entrances.map(mapToPair).join(''));
+	console.log('mapping exits'); // DEBUG:
+	$('#param-exits').val(exits.map(mapToPair).join(''));
+	$('#param-walls').val(walls.map(mapToPair).join(''));
 }
 
 

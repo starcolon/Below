@@ -72,12 +72,24 @@
 
 	function importGrid(){
 		// Display a popup to wait for the user input
+		displayPopup(null, function okay(){
+			console.log('Input grid JSON is submitted'); // DEBUG:
+			// Fires when the user clicks OK button
+			var grid = JSON.parse($('#json').val());
+			console.log(grid); // DEBUG:
+			if (!grid.length || grid.length==0){
+				alert('The supplied grid is not well-formed or not valid.');
+				return false;
+			}
+			console.log('Rendering grid from input');
+			// Render this grid to the UI
+			renderFromGrid(grid);
+		});
 	}
 
 	function exportGrid(){
 		// Display a popup
-		// TAOTODO:
-		var grid = generate();
+		var grid = generateWithoutRender();
 		console.log(grid);
 		displayPopup(JSON.stringify(grid));
 	}

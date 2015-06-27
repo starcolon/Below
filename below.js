@@ -622,8 +622,8 @@ below.ui = {
 			});
 		});
 
-		let cellWidth = $('.cell').first().width()+2;
-		let cellHeight = $('.cell').first().height()+2;
+		let cellWidth = $('.cell').first().width()+1;
+		let cellHeight = $('.cell').first().height()+1;
 		
 		// Wrap up the grid after render
 		$('.row').each(function (rowId){
