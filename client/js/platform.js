@@ -33,6 +33,7 @@ function takeParameters(){
 }
 
 function generate(onclick){
+	console.log('generating a grid ...'); // DEBUG:
 	// Take the grid paramters from the users
 	let parameters = takeParameters();
 	// Create a new grid
@@ -84,7 +85,7 @@ function findRoute(onclick){
 	}
 }
 
-function renderFromGrid(grid){
+function renderFromGrid(grid,onclick){
 	if (typeof(grid)=='undefined' || grid==null)
 		return false;
 
@@ -128,6 +129,18 @@ function renderFromGrid(grid){
 	console.log('mapping exits'); // DEBUG:
 	$('#param-exits').val(exits.map(mapToPair).join(''));
 	$('#param-walls').val(walls.map(mapToPair).join(''));
+
+	// Render the grid on the page
+	below.ui.render(grid,$('#grid-container'),[],true);
+
+	// Bind the cell with onclick event (if supplied)
+	if (typeof(onclick) != 'undefined'){
+		$('.cell').each(function(i,cell){
+			$(cell).click(function (evt){
+				onclick(evt.target);
+			})
+		});
+	}
 }
 
 

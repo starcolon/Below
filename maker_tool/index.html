@@ -75,6 +75,7 @@
 		displayPopup(null, function okay(){
 			console.log('Input grid JSON is submitted'); // DEBUG:
 			// Fires when the user clicks OK button
+			console.log($('#json').val()); // DEBUG:
 			var grid = JSON.parse($('#json').val());
 			console.log(grid); // DEBUG:
 			if (!grid.length || grid.length==0){
@@ -83,7 +84,7 @@
 			}
 			console.log('Rendering grid from input');
 			// Render this grid to the UI
-			renderFromGrid(grid);
+			renderFromGrid(grid,onCellClick);
 		});
 	}
 
@@ -98,8 +99,8 @@
 		data = data || '';
 		wrappedOkay = function(){
 			// Hide the popup by default
-			$('#popup').remove();
 			if (typeof(okay)=='function') okay();
+			$('#popup').remove();
 		}
 
 		var popup = $('<div>',{'id': 'popup'});
