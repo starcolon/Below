@@ -589,7 +589,7 @@ below.ui = {
 				let content = '';
 				if (cell.isEntrance===true) {content = 'IN'; console.log('in = ' + i + ', ' + j) }
 				else if (cell.isExit===true) content = 'OUT';
-				else content = '&nbsp;'
+				else content = '&nbsp;';
 				let c = $('<div>')
 					.attr('data-i',i)
 					.attr('data-j',j)

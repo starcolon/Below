@@ -140,4 +140,35 @@ function renderFromGrid(grid,onclick){
 }
 
 
+function saveGridToMongo(grid,serverAddr,db,collection){
+	return new Promise(function (resove,reject){
+		console.log('Requesting to mongodb...');
+		var restUrl = 'http://' + serverAddr + '/' + db + '/' + collection;
+
+		// TAOTODO: Implement this
+
+	});
+}
+
+function fetchGridsFromMongo(serverAddr,db,collection){
+	// TAOTODO: Implement this
+	return new Promise(function (resolve,reject){
+		var restUrl = 'http://' + serverAddr + '/' + db + '/' + collection;
+
+		// TAOTODO: Implement this
+
+
+	});
+}
+
+function fetchGridFromMongo(serverAddr,db,collection,id){
+	// TAOTODO: Implement this
+	return new Promise(function (resolve,reject){
+		var restUrl = 'http://' + serverAddr + '/' + db + '/' + collection;
+
+		// TAOTODO: Implement this
+
+	});	
+}
+
 

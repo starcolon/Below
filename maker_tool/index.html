@@ -3,11 +3,11 @@
 		<title>Grid maker tool</title>
 		<script src="http://requirejs.org/docs/release/2.1.17/minified/require.js" name="require-js"></script>
 		<script src="http://underscorejs.org/underscore-min.js" name="underscore-js"></script>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js" name="jquery-cdn"></script>
 		<script src="../modules/promise-7.0.1.min.js" name="promise-js"></script>
 		<script src="../modules/grid.js" name="grid-module"></script>
 		<script src="../below.js" name="below-module"></script>
 		<script src="../client/js/platform.js" name="platform-renderer"></script>
-		<script src="http://code.jquery.com/jquery-2.1.4.min.js" name="jquery-cdn"></script>
 		<link rel="stylesheet" href="../client/stylesheets/platform.css"></link>
 		<meta property="og:title" content="@below.js - grid maker tool">
 		<meta property="og:type" content="non_profit">
@@ -145,6 +145,7 @@
 
 	function saveToDB(){
 		var id = $('#id').val() || 32225;
+		var serverAddr = $('#serveraddr').val() || 'localhost:28017';
 
 		var grid = generateWithoutRender();
 		if (grid==null){
@@ -152,13 +153,17 @@
 			return false;
 		}
 
-		// TAOTODO: Save the grid to the database
-
-		// Make a connection to DB
-
-		// Save !
-
-		
+		// TAOTODO: Save the grid to the database through MongoDB's RESTful API
+		saveGridToMongo(grid,serverAddr,db,collection)
+			.then(function(result){
+				alert('Grid saved!');
+				console.log('grid saved to ' + serverAddr + '/' + db + '/' + collection);
+			})
+			.error(function(err){
+				alert('Unable to save the grid :(');
+				console.error('Failed to save grid');
+				console.error(err);
+			});
 	}
 
 
