@@ -144,26 +144,35 @@
 	}
 
 	function saveToDB(){
-		var id = $('#id').val() || 32225;
-		var serverAddr = $('#serveraddr').val() || 'localhost:28017';
 
-		var grid = generateWithoutRender();
-		if (grid==null){
-			alert('Ouch! There is no grid to save.');
-			return false;
-		}
+		// Load configurations
+		$.getJSON('./conf.json', function (conf){
 
-		// TAOTODO: Save the grid to the database through MongoDB's RESTful API
-		saveGridToMongo(grid,serverAddr,db,collection)
-			.then(function(result){
-				alert('Grid saved!');
-				console.log('grid saved to ' + serverAddr + '/' + db + '/' + collection);
-			})
-			.error(function(err){
-				alert('Unable to save the grid :(');
-				console.error('Failed to save grid');
-				console.error(err);
-			});
+			console.log('Configurations loaded...'); // DEBUG:
+			console.debug(conf);
+
+			var serverAddr = conf['mongo-server'];
+			var db = conf['database'];
+			var collection = conf['collection'];
+
+			var grid = generateWithoutRender();
+			if (grid==null){
+				alert('Ouch! There is no grid to save.');
+				return false;
+			}
+
+			// TAOTODO: Save the grid to the database through MongoDB's RESTful API
+			saveGridToMongo(grid,serverAddr,db,collection)
+				.then(function(result){
+					alert('Grid saved!');
+					console.log('grid saved to ' + serverAddr + '/' + db + '/' + collection);
+				})
+				.error(function(err){
+					alert('Unable to save the grid :(');
+					console.error('Failed to save grid');
+					console.error(err);
+				});
+		});
 	}
 
 

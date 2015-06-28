@@ -145,8 +145,9 @@ function saveGridToMongo(grid,serverAddr,db,collection){
 		console.log('Requesting to mongodb...');
 		var restUrl = 'http://' + serverAddr + '/' + db + '/' + collection;
 
-		// TAOTODO: Implement this
 
+		// TAOTODO: Implement this
+		$.ajax();
 	});
 }
 
