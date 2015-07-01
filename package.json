@@ -6,9 +6,8 @@
   "url": "http://starcolon.com/",
   "makerToolServer": {
     "port": 7007,
-    "mongo-server": "localhost:28017",
-    "database": "below",
-    "collection": "grids"
+    "mongo-server": "localhost:27017",
+    "database": "belowgrids",
   },
   "repository": {
     "type": "git",

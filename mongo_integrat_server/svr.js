@@ -34,7 +34,6 @@ const appName = package_json.name + ': maker tool';
 const portNo = package_json.makerToolServer.port || 7007;
 const mongoDbAddr = package_json.makerToolServer['mongo-server'];
 const mongoDbDatabase = package_json.makerToolServer['database'];
-const mongoDbCollection = package_json.makerToolServer['collection'];
 var serviceUrl = ''; // To be assigned run-time when server starts
 
 // Initialize project dependencies
@@ -43,7 +42,7 @@ var colors = require('colors');
 var jade = require('jade');
 var fs = require('fs');
 var bodyParser = require('body-parser');
-var mongodb = require('mongo');
+var below = require('../below.js');
 
 
 
@@ -66,9 +65,7 @@ var mongodb = require('mongo');
 	});
 
 })({
-	port: portNo,
-	dbName: 'test',
-	dbCollectionName: 'celebroid_lessons'
+	port: portNo
 });
 
 
@@ -85,36 +82,67 @@ function configServer(app,bodyParser){
 	});
 
 	// Map REST parameters
+	app.param('collection',function(req,resp,next,collection){
+		req.collection = collection || "default";
+		return next();
+	});
 	app.param('grid',function(req,resp,next,grid){
 		req.grid = grid || [];
 		return next();
 	});
-
-	app.param('id',function(req,resp,next,id){
-		req.id = id || 0;
-		return next();
-	});
  
 	// Map REST verbs
-	app.get('/list/',httpList);
+	app.get('/list/',httpList); 
 	app.get('/publish/',httpPublish);
+	app.get('/fetch/',httpFetch);
 }
 
 /**
  * List the available grids stored in the server database
  */
 function httpList(req,resp,next){
+	console.log('/list/'.green);
+	// List all collections in the database
+	below.mongo.init(mongoDbAddr,mongoDbDatabase,null)
+		.then(below.mongo.list())
+		.catch(function(error){
+			console.error(error);
+			resp.send([]);
+		})
+		.done(function(collections){
+			resp.send(collections);
+		});
+}
 
+
+function httpFetch(req,resp,next){
+	console.log('/fetch/'.green);
+	// Fetch the grid from the specified collection
+	below.mongo.init(mongoDbAddr,mongoDbDatabase,null)
+		 .then(below.mongo.load({i0:0, j0:0, iN:5000, jN:5000}))
+		 .catch(function(error){
+		 	console.error(error);
+		 	resp.send([]);
+		 })
+		 .done(function(grid){
+		 	resp.send(grid);
+		 });
 }
 
 /**
  * Publish a new or existing grid to the database
  */
 function httpPublish(req,resp,next){
-	var grid = req.grid;
-	var id = req.id || 0; // by the default the id is set to zero (if not specified)
+	console.log('/publish/'.green);
+	var grid = req.grid || [];
 
-
+	if (grid.length==0){
+		console.log('Received empty grid');
+		return resp.send([]);
+	}
+	else{
+		below.mongo.init(mongoDbAddr,mongoDbDatabase,null)
+	}
 
 }
 

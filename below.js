@@ -353,6 +353,31 @@ below.mongo = {
 	},
 
 	/**
+	 * Make sure a collection exist
+	 */
+	createCollection: function(){
+		return function(pp){
+			return new Promise(function(resolve,reject){
+				// Check if a collection exist
+				pp.db.collectionNames(function(err,collections){
+					if (err) reject(err);
+					function exist(c){ return c == pp.collection }
+					if (collections.length>0 && collections.filter(exist).length==0){
+						// Doesn't exist, create new
+						pp.db.createCollection(pp.collection, function(e,collection){
+							if (e) reject(e);
+							resolve(pp);
+						});
+					}
+					else{
+						resolve(pp);
+					}
+				});
+			});
+		}
+	},
+
+	/**
 	 * Save the grid to the database
 	 * @param {Grid}
 	 * @param {Function} criteria function which takes a cell value and its coordinate as arguments
@@ -442,6 +467,23 @@ below.mongo = {
 			});
 		}
 	},
+
+	/**
+	 * List all collections in the database
+	 * returns {array} of collection names
+	 */
+	list: function(){
+		return new Promise(function(resolve,reject){
+			pp.db.collections(function(err,collectins){
+				if (err){
+					reject(err);
+				}
+				else{
+					resolve(collections);
+				}
+			})
+		});
+	}
 
 }
 

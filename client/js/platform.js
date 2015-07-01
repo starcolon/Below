@@ -1,6 +1,10 @@
 "use strict" // Here we go strict mode *w*
 
 var grid = [];
+var makerToolServer = 'http://localhost:7007/';
+var publishService = 'publish';
+var listService = 'list';
+var fetchService = 'fetch';
 
 function takeAndSplitCoords(value){
 	let altered = value.replace(')',''); // remove the closing braces because we don't need em
@@ -145,8 +149,7 @@ function saveGridToMongo(grid,serverAddr,db,collection){
 		console.log('Requesting to mongodb...');
 		var restUrl = 'http://' + serverAddr + '/' + db + '/' + collection;
 
-
-		// TAOTODO: Implement this
+		$.ajax();
 		
 	});
 }
@@ -157,6 +160,7 @@ function fetchGridsFromMongo(serverAddr,db,collection){
 		var restUrl = 'http://' + serverAddr + '/' + db + '/' + collection;
 
 		// TAOTODO: Implement this
+		$.getJSON()
 
 
 	});
