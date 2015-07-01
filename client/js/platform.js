@@ -147,7 +147,7 @@ function saveGridToMongo(grid,serverAddr,db,collection){
 
 
 		// TAOTODO: Implement this
-		$.ajax();
+		
 	});
 }
 
@@ -162,7 +162,7 @@ function fetchGridsFromMongo(serverAddr,db,collection){
 	});
 }
 
-function fetchGridFromMongo(serverAddr,db,collection,id){
+function fetchSingleGridFromMongo(serverAddr,db,collection,id){
 	// TAOTODO: Implement this
 	return new Promise(function (resolve,reject){
 		var restUrl = 'http://' + serverAddr + '/' + db + '/' + collection;

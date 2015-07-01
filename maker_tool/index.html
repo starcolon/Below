@@ -146,7 +146,7 @@
 	function saveToDB(){
 
 		// Load configurations
-		$.getJSON('./conf.json', function (conf){
+		$.getJSON('./conf.json?format=json', function (conf){
 
 			console.log('Configurations loaded...'); // DEBUG:
 			console.debug(conf);

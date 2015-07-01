@@ -4,6 +4,12 @@
   "author": "StarColon Projects",
   "email": "tao@starcolon.com",
   "url": "http://starcolon.com/",
+  "makerToolServer": {
+    "port": 7007,
+    "mongo-server": "localhost:28017",
+    "database": "below",
+    "collection": "grids"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/starcolon/Below.git"

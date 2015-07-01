@@ -1,5 +1,0 @@
-{
-	"mongo-server": "localhost:28017",
-	"database": "below",
-	"collection": "grids"
-}
