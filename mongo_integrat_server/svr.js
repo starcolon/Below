@@ -91,12 +91,10 @@ function configServer(app,bodyParser){
 	});
  
 	// Map REST verbs
-	app.get('/list/',httpList); 
+	app.get('/list/',httpList);
 	app.get('/ls/',httpList);
-	app.get('/publish/',httpPublish);
-	app.get('/save/',httpPublish);
-	app.get('/fetch/',httpFetch);
-	app.get('/get/',httpFetch);
+	app.put('/:collection',httpPublish); // PUT to save
+	app.get('/:collection',httpFetch); // GET to read
 }
 
 /**
@@ -121,7 +119,8 @@ function httpList(req,resp,next){
 function httpFetch(req,resp,next){
 	console.log('/fetch/'.green);
 	// Fetch the grid from the specified collection
-	below.mongo.init(mongoDbAddr,mongoDbDatabase,null)
+	var collection = req.collection || '';
+	below.mongo.init(mongoDbAddr,mongoDbDatabase,collection)
 		 .then(below.mongo.load({i0:0, j0:0, iN:5000, jN:5000}))
 		 .catch(function(error){
 		 	console.error(error);

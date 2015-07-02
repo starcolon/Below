@@ -450,7 +450,7 @@ below.mongo = {
 			return new Promise(function(done,reject){
 				pp.db.collection(pp.collection).find(scope).toArray(function(err,records){
 					if (err){
-						console.err(err.toString().red);
+						console.error(err.toString().red);
 						return reject(null);
 					}
 					// Fill the record in the destination grid
