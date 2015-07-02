@@ -435,15 +435,14 @@ below.mongo = {
 
 	/**
 	 * Load the grid from the database
-	 * @param {Object} constraint of loading
+	 * @param {Object} constraint of loading {i0:0, j0:0, iN:41, jN:41}
 	 */
 	load: function(constraint){
-		constraint = constraint || {i0:0, j0:0, iN:41, jN:41}; // iN and jN represent the max i and j to loaded, respectively
 		// Make query conditions from the given constraint
-		let scope = {
+		let scope = constraint ? {
 			u: {'$gte':constraint.i0, '$lte':constraint.iN},
 			v: {'$gte':constraint.j0, '$lte':constraint.jN}
-		}
+		} : undefined;
 		return function(pp){
 			let grid = [];
 			// Load the record from the db
@@ -453,6 +452,7 @@ below.mongo = {
 						console.error(err.toString().red);
 						return reject(null);
 					}
+
 					// Fill the record in the destination grid
 					let nLoaded = 0;
 					records.forEach(function(r){
