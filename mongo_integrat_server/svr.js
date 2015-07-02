@@ -28,7 +28,7 @@
  * written in July 2015
  */
 
-var package_json = require('../package.json')
+var package_json = require('../package.json');
 const appVersion = package_json.version;
 const appName = package_json.name + ': maker tool';
 const portNo = package_json.makerToolServer.port || 7007;
@@ -39,7 +39,6 @@ var serviceUrl = ''; // To be assigned run-time when server starts
 // Initialize project dependencies
 var app = require('express')();
 var colors = require('colors');
-var jade = require('jade');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var below = require('../below.js');
@@ -93,8 +92,11 @@ function configServer(app,bodyParser){
  
 	// Map REST verbs
 	app.get('/list/',httpList); 
+	app.get('/ls/',httpList);
 	app.get('/publish/',httpPublish);
+	app.get('/save/',httpPublish);
 	app.get('/fetch/',httpFetch);
+	app.get('/get/',httpFetch);
 }
 
 /**
@@ -106,6 +108,7 @@ function httpList(req,resp,next){
 	below.mongo.init(mongoDbAddr,mongoDbDatabase,null)
 		.then(below.mongo.list())
 		.catch(function(error){
+			console.log('ERROR!');
 			console.error(error);
 			resp.send([]);
 		})

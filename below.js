@@ -473,16 +473,23 @@ below.mongo = {
 	 * returns {array} of collection names
 	 */
 	list: function(){
-		return new Promise(function(resolve,reject){
-			pp.db.collections(function(err,collectins){
-				if (err){
-					reject(err);
-				}
-				else{
-					resolve(collections);
-				}
-			})
-		});
+		return function(pp){
+			return new Promise(function(resolve,reject){
+				var collections = [];
+				pp.db.collectionNames(function(err,items){
+					if (err){
+						console.error('ERROR retrieving the collections'.red);
+						reject();
+					}
+					else{
+						var collections = items
+							.map(function(u){ return u.name.split('.').pop() })
+							.filter(function(u){ return u !== 'indexes' });
+						resolve(collections);
+					}
+				})
+			});
+		}
 	}
 
 }

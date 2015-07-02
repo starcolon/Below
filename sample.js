@@ -17,9 +17,12 @@ setting.costFunction = function(v,c){
 
 var grid = below.generate(setting);
 
+
+/*
 var route = below.generateBestRoute(grid,{i:0,j:4},{i:53,j:28});
 below.illustrate(grid, route);
 console.log('Total cost spent for this route: ' + below.sumCostOfRoute(grid,route).toFixed(0).toString() );
+*/
 
 //function showSummary(n){ console.log( (n + ' records saved to the database').toString().cyan ) }
 //below.mongo.init(null,'test','grid').then(below.mongo.save(grid)).done(showSummary);
