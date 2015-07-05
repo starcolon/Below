@@ -1,5 +1,4 @@
-var below = require('./below.js');
-
+var below = require('./below');
 
 var setting = below.settings.create();
 setting.size = {width:60, height:85};

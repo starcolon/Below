@@ -37,29 +37,10 @@
 			Import &amp; Export
 			<button onclick="exportGrid()">Export to JSON</button>
 			<button onclick="importGrid()">Import from JSON</button>
+			<input id="collection" type="text" value="" style="font-size:12pt"/>
 			<button onclick="saveToDB()">Save to MongoDB</button>
+			<button onclick="loadFromDB()">Load from MongoDB</button>
 		</div>
-		<!--
-		<div class="github-float-panel">
-			Mongo DB:
-			<ul>
-				<li>
-					<span style="font-size:10pt">Server:</span>
-					<input id="server" type="text" value="mongodb://localhost"/>
-				</li>
-				<li>
-					<span style="font-size:10pt">Database</span>
-					<input id="db" type="text" value="test">
-				</li>
-				<li>
-					<span style="font-size:10pt">Collection</span>
-					<input id="collection" type="text" value="grid"/>
-				</li>
-				<button onclick="saveGrid()">Save</button>
-				<button onclick="loadGrid()">Load</button>
-			</ul>
-		</div>
-		-->
 	</body>
 </html>
 <script type="text/javascript">
@@ -145,34 +126,25 @@
 
 	function saveToDB(){
 
-		// Load configurations
-		$.getJSON('./conf.json?format=json', function (conf){
-
-			console.log('Configurations loaded...'); // DEBUG:
-			console.debug(conf);
-
-			var serverAddr = conf['mongo-server'];
-			var db = conf['database'];
-			var collection = conf['collection'];
-
-			var grid = generateWithoutRender();
-			if (grid==null){
-				alert('Ouch! There is no grid to save.');
-				return false;
+		// Make a request to save the grid to the server
+		var collectionName = $('#collection').val();
+		console.log('Start saving to collection: ' + collectionName);
+		var grid = generateWithoutRender();
+		$.ajax({
+			url: makerToolServer(collectionName),
+			data: grid,
+			dataType: 'json',
+			method: 'PUT'
+		}).done(function(resp){
+			if (resp.isError===true){
+				console.log('ERROR saving the grid to mongodb');
+				alert('Error saving :(');
 			}
-
-			// TAOTODO: Save the grid to the database through MongoDB's RESTful API
-			saveGridToMongo(grid,serverAddr,db,collection)
-				.then(function(result){
-					alert('Grid saved!');
-					console.log('grid saved to ' + serverAddr + '/' + db + '/' + collection);
-				})
-				.error(function(err){
-					alert('Unable to save the grid :(');
-					console.error('Failed to save grid');
-					console.error(err);
-				});
+			else{
+				alert('Saved :)');
+			}
 		});
+		
 	}
 
 

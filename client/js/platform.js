@@ -1,10 +1,9 @@
 "use strict" // Here we go strict mode *w*
 
 var grid = [];
-var makerToolServer = 'http://localhost:7007/';
-var publishService = 'publish';
-var listService = 'list';
-var fetchService = 'fetch';
+makerToolServer = function(suffix){ return 'http://localhost:7007/'+suffix }
+listService =  function(){ return 'list/' }
+fetchService = function(){ return 'fetch/' }
 
 function takeAndSplitCoords(value){
 	let altered = value.replace(')',''); // remove the closing braces because we don't need em
