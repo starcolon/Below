@@ -130,6 +130,10 @@
 		var collectionName = $('#collection').val();
 		console.log('Start saving to collection: ' + collectionName);
 		var grid = generateWithoutRender();
+		
+		console.log('saving the grid as follows:');
+		console.log(grid);
+
 		$.ajax({
 			url: makerToolServer(collectionName),
 			data: grid,
