@@ -136,7 +136,7 @@
 
 		$.ajax({
 			url: makerToolServer(collectionName),
-			data: grid,
+			data: JSON.stringify(grid),
 			dataType: 'json',
 			method: 'PUT'
 		}).done(function(resp){
@@ -149,6 +149,10 @@
 			}
 		});
 		
+	}
+
+	function loadFromDB(){
+		// TAOTODO: Implement this
 	}
 
 

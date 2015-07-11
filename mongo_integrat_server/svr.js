@@ -136,14 +136,18 @@ function httpFetch(req,resp,next){
  */
 function httpPublish(req,resp,next){
 	console.log('/publish/'.green);
-	var grid = req.grid || [];
+	var grid = JSON.parse(Object.keys(req.body)[0]); // It's complicated to explain why
+	console.log(grid);
+	console.log(typeof grid);
 
 	if (grid.length==0){
 		console.log('Received empty grid');
 		return resp.send([]);
 	}
 	else{
-		below.mongo.init(mongoDbAddr,mongoDbDatabase,null)
+		below.mongo.init(mongoDbAddr,mongoDbDatabase,req.collection)
+			.then(below.mongo.save(grid))
+			.done();
 	}
 
 }
