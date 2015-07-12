@@ -155,11 +155,11 @@
 		$.ajax({
 			url: makerToolServer(collectionName),
 			method: 'GET'
-		}).done(function(resp){
-			alert('Loaded!');
-			console.log(resp); 
+		}).done(function(grid){
+			console.log(grid); 
 
-			//TAOTODO: Render the loaded grid
+			// Render the grid on the output
+			renderFromGrid(grid,onCellClick);
 
 		}).error(function(){
 			alert('Error!');
