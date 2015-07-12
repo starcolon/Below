@@ -134,6 +134,9 @@
 		console.log('saving the grid as follows:');
 		console.log(grid);
 
+		// Attach the cost function along with cell (0,0)
+		grid[0][0].costFn = $('#param-cost').val();
+
 		$.ajax({
 			url: makerToolServer(collectionName),
 			data: JSON.stringify(grid),
@@ -155,12 +158,15 @@
 			url: makerToolServer(collectionName),
 			method: 'GET'
 		}).done(function(grid){
-			console.log(grid); 
-
+			console.log(grid);
 			alert('loaded...');
 
 			// Render the grid on the output
 			renderFromGrid(grid,onCellClick);
+			if (typeof grid[0][0]['costFn'] != 'undefined')
+				$('#param-cost').val(grid[0][0].costFn);
+			else
+				$('#param-cost').val('');
 
 		}).error(function(){
 			alert('Error!');

@@ -128,6 +128,7 @@ function httpFetch(req,resp,next){
 		 .done(function(grid){
 		 	console.log('Grid loaded ...'.yellow);
 		 	console.log(grid);
+		 	// TAOTODO: Should we disconnect from the db here?
 		 	resp.send(grid);
 		 });
 }
@@ -137,7 +138,7 @@ function httpFetch(req,resp,next){
  */
 function httpPublish(req,resp,next){
 	console.log('PUT/'.green + req.collection);
-	var grid = JSON.parse(Object.keys(req.body)[0]); // It's complicated to explain why
+	var grid = JSON.parse(Object.keys(req.body)[0]); // Forgive me ...
 	console.log(grid);
 	console.log(typeof grid);
 
@@ -148,6 +149,7 @@ function httpPublish(req,resp,next){
 	else{
 		below.mongo.init(mongoDbAddr,mongoDbDatabase,req.collection)
 			.then(below.mongo.save(grid))
+			.then(function(ack){ resp.send([]) })
 			.done();
 	}
 
