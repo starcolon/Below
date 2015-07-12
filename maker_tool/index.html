@@ -140,19 +140,30 @@
 			dataType: 'json',
 			method: 'PUT'
 		}).done(function(resp){
-			if (resp.isError===true){
-				console.log('ERROR saving the grid to mongodb');
-				alert('Error saving :(');
-			}
-			else{
-				alert('Saved :)');
-			}
+			alert('Saved :)');
+		}).error(function(){
+			alert('Error!');
 		});
 		
 	}
 
 	function loadFromDB(){
 		// TAOTODO: Implement this
+		var collectionName = $('#collection').val();
+		console.log('Start loading the collection: ' + collectionName);
+
+		$.ajax({
+			url: makerToolServer(collectionName),
+			method: 'GET'
+		}).done(function(resp){
+			alert('Loaded!');
+			console.log(resp); 
+
+			//TAOTODO: Render the loaded grid
+
+		}).error(function(){
+			alert('Error!');
+		});
 	}
 
 

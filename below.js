@@ -442,11 +442,14 @@ below.mongo = {
 		let scope = constraint ? {
 			u: {'$gte':constraint.i0, '$lte':constraint.iN},
 			v: {'$gte':constraint.j0, '$lte':constraint.jN}
-		} : undefined;
+		} : {
+			u: {'$gte':0, '$lte':65535},
+			v: {'$gte':0, '$lte':65535}
+		};
 		return function(pp){
-			let grid = [];
 			// Load the record from the db
 			return new Promise(function(done,reject){
+				var grid = [];
 				pp.db.collection(pp.collection).find(scope).toArray(function(err,records){
 					if (err){
 						console.error(err.toString().red);
@@ -458,12 +461,12 @@ below.mongo = {
 					records.forEach(function(r){
 						let i = parseInt(r.u); 
 						let j = parseInt(r.v);
-						Grid.cell(i,j).setTo(grid)(r.data);
+						Grid.cell(i,j).set(grid)(r.data); // TAOTODO: This doesn't work
 						nLoaded ++;
 					});
 					console.log( nLoaded + ' grid cells loaded');
+					done(grid);
 				});
-				return done(grid);
 			});
 		}
 	},

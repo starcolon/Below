@@ -107,7 +107,7 @@ function httpList(req,resp,next){
 		.then(below.mongo.list())
 		.catch(function(error){
 			console.log('ERROR!');
-			console.error(error);
+			console.error(error.toString().red);
 			resp.send([]);
 		})
 		.done(function(collections){
@@ -117,16 +117,17 @@ function httpList(req,resp,next){
 
 
 function httpFetch(req,resp,next){
-	console.log('/fetch/'.green);
+	console.log('GET/'.green + req.collection);
 	// Fetch the grid from the specified collection
-	var collection = req.collection || '';
-	below.mongo.init(mongoDbAddr,mongoDbDatabase,collection)
+	below.mongo.init(mongoDbAddr,mongoDbDatabase,req.collection)
 		 .then(below.mongo.load())
 		 .catch(function(error){
-		 	console.error(error);
+		 	console.error(error.toString().red);
 		 	resp.send([]);
 		 })
 		 .done(function(grid){
+		 	console.log('Grid loaded ...'.yellow);
+		 	console.log(grid);
 		 	resp.send(grid);
 		 });
 }
@@ -135,7 +136,7 @@ function httpFetch(req,resp,next){
  * Publish a new or existing grid to the database
  */
 function httpPublish(req,resp,next){
-	console.log('/publish/'.green);
+	console.log('PUT/'.green + req.collection);
 	var grid = JSON.parse(Object.keys(req.body)[0]); // It's complicated to explain why
 	console.log(grid);
 	console.log(typeof grid);
