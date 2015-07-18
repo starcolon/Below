@@ -126,7 +126,10 @@ function httpFetch(req,resp,next){
 		 	resp.send([]);
 		 })
 		 .done(function(grid){
-		 	console.log('Grid loaded ...'.yellow);
+		 	if (grid.length==0)
+		 		console.log('No grid loaded ...'.yellow);
+		 	else
+		 		console.log('Grid loaded ...'.yellow);
 		 	console.log(grid);
 		 	// TAOTODO: Should we disconnect from the db here?
 		 	resp.send(grid);

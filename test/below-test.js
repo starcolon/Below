@@ -345,6 +345,7 @@ describe('@below test kit',function(){
 
 	describe('mongodb interface tests', function(){
 
+		var grid = [];
 		it('should save the grid to the database', function(done){
 			var settings = below.settings.create();
 			settings.size = {width: 16, height: 16};
@@ -357,7 +358,7 @@ describe('@below test kit',function(){
 				return {i:parseInt(i),j:10}
 			});
 			
-			var grid = below.generate(settings);
+			grid = below.generate(settings);
 			var saveAll = function(){return true};
 
 			below.mongo.init(null,'gridsample','grid').then(below.mongo.save(grid,saveAll)).done(function(n){

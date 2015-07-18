@@ -159,7 +159,11 @@
 			method: 'GET'
 		}).done(function(grid){
 			console.log(grid);
-			alert('loaded...');
+			if (grid.length==0){
+				alert('No grid content loaded...');
+			}
+			else
+				alert('loaded...');
 
 			// Render the grid on the output
 			renderFromGrid(grid,onCellClick);
