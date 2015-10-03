@@ -372,8 +372,8 @@ describe('@below test kit',function(){
 			var constraint = {i0:0, j0:0, iN:16, jN:16};
 			below.mongo.init(null,'gridsample','grid').then(below.mongo.load(constraint)).done(function(grid2){
 				// Validate
-				for (var u of Object.keys(grid2))
-					for (var v of Object.keys(grid2[u])){
+				for (var u of Object.keys(grid))
+					for (var v of Object.keys(grid[u])){
 						console.log(u+','+v+' > ' +JSON.stringify(grid[u][v]));
 						expect(grid2[u][v]).to.deep.equal(grid[u][v]);
 					}
