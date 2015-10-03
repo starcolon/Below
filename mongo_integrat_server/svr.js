@@ -131,7 +131,7 @@ function httpFetch(req,resp,next){
 		 	else
 		 		console.log('Grid loaded ...'.yellow);
 		 	console.log(grid);
-		 	// TAOTODO: Should we disconnect from the db here?
+		 	// TAOTOREVIEW: Should we disconnect from the db here?
 		 	resp.send(grid);
 		 });
 }

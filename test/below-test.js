@@ -367,7 +367,6 @@ describe('@below test kit',function(){
 			});
 		})
 
-		// TAOTODO: Fix this :
 		it('should load the grid from the database', function(done){
 			var constraint = {i0:0, j0:0, iN:16, jN:16};
 			below.mongo.init(null,'gridsample','grid').then(below.mongo.load(constraint)).done(function(grid2){
