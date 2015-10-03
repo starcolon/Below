@@ -20,3 +20,7 @@ The configuration for the server can be simply set in `package.json`.
 ## Supported Browser
 
 If you have tried this application on Firefox, it wouldn't be surprised it didn't work. Yes, I recommend you to access the webapp via Chrome.
+
+#### Why Firefox doesn't support?
+
+Good question with simple answer indeed. Firefox doesn't yet support the ECMAScript 6's `let` keyword which is currently used by this app. Chrome is familiar with this keyword so it won't cause any problem.
