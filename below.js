@@ -461,6 +461,7 @@ below.mongo = {
 					records.forEach(function(r){
 						let i = parseInt(r.u); 
 						let j = parseInt(r.v);
+
 						Grid.cell(i,j).set(grid)(r.data);
 						nLoaded ++;
 					});

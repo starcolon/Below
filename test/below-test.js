@@ -372,10 +372,6 @@ describe('@below test kit',function(){
 			var constraint = {i0:0, j0:0, iN:16, jN:16};
 			below.mongo.init(null,'gridsample','grid').then(below.mongo.load(constraint)).done(function(grid2){
 				// Validate
-
-				// TAODEBUG:
-				console.log(grid2);
-
 				for (var u of Object.keys(grid2))
 					for (var v of Object.keys(grid2[u])){
 						console.log(u+','+v+' > ' +JSON.stringify(grid[u][v]));
