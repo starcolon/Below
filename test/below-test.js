@@ -374,6 +374,7 @@ describe('@below test kit',function(){
 				// Validate
 				for (var u of Object.keys(grid2))
 					for (var v of Object.keys(grid2[u])){
+						console.log(u+','+v+' > ' +JSON.stringify(grid[u][v]));
 						expect(grid2[u][v]).to.deep.equal(grid[u][v]);
 					}
 				done();
