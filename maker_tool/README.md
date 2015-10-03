@@ -16,3 +16,7 @@ To run the maker tool server:
 ```
 
 The configuration for the server can be simply set in `package.json`.
+
+## Supported Browser
+
+If you have tried this application on Firefox, it wouldn't be surprised it didn't work. Yes, I recommend you to access the webapp via Chrome.
