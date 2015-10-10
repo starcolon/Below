@@ -4,6 +4,7 @@
   "author": "StarColon Projects",
   "email": "tao@starcolon.com",
   "url": "http://starcolon.com/",
+  "main": "below.js",
   "makerToolServer": {
     "port": 7007,
     "mongo-server": "mongodb://localhost",
@@ -13,7 +14,7 @@
     "type": "git",
     "url": "git://github.com/starcolon/Below.git"
   },
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": false,
   "scripts": {
     "test": "mocha test",
